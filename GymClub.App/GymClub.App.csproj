@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GymClub.Database\GymClub.Database.csproj" />
+    <ProjectReference Include="..\GymClub.Domain\GymClub.Domain.csproj" />
   </ItemGroup>
 
 </Project>

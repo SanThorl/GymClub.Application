@@ -49,3 +49,7 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+.text-velvet {
+    color: #8A2BE2 !important; /* Violet Color */
+}
