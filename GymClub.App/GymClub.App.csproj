@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -14,6 +14,10 @@
   <ItemGroup>
     <ProjectReference Include="..\GymClub.Database\GymClub.Database.csproj" />
     <ProjectReference Include="..\GymClub.Domain\GymClub.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\plugins\notiflix-3-2-7\" />
   </ItemGroup>
 
 </Project>

@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection"));
-});
+}, ServiceLifetime.Transient, ServiceLifetime.Transient);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -24,6 +24,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+//app.UseCookieMiddleware();
+app.UseAuthorization();
 
 app.UseStaticFiles();
 app.UseAntiforgery();

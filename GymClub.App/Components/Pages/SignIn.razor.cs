@@ -5,14 +5,18 @@ namespace GymClub.App.Components.Pages
     public partial class SignIn
     {
         private LoginModel _reqModel = new LoginModel();
-        void SignUp()
-        {
-            _nav.NavigateTo("/register");
-        }
 
-        void Login()
+        //protected override Task OnAfterRenderAsync(bool firstRender)
+        //{
+        //    if (firstRender)
+        //    {
+
+        //    }
+        //}
+
+        private void LogIn()
         {
-            _nav.NavigateTo("/signIn");
+
         }
     }
 }

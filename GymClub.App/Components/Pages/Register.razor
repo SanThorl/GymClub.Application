@@ -1,0 +1,36 @@
+﻿@page "/register"
+@using Radzen
+@using Radzen.Blazor
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="card mb-4">
+			<div class="card-body">
+
+				<div class="row">
+					<div class="mb-3 col-md-6">
+						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">User Name</RadzenText>
+						<RadzenTextBox @bind-value="@_reqModel.UserName" Class="w-100" />
+					</div>
+					<div class="mb-3 col-md-6">
+						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Password</RadzenText>
+						<RadzenTextBox @bind-value="@_reqModel.Password" Class="w-100" />
+					</div>
+					<div class="mb-3 col-md-6">
+						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Phone</RadzenText>
+						<RadzenTextBox @bind-value="@_reqModel.Phone" Class="w-100" />
+					</div>
+					<div class="mb-3 col-md-6">
+						<RadzenText TextStyle="TextStyle.Subtitle2">Gender</RadzenText>
+						<RadzenTextBox @bind-value="@_reqModel.Gender" Class="w-100" />
+					</div>
+					<div class="mb-3 col-md-6">
+						<RadzenText TextStyle="TextStyle.Subtitle2">Date Of Birth</RadzenText>
+						<RadzenTextBox @bind-value="@_reqModel.Gender" Class="w-100" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
