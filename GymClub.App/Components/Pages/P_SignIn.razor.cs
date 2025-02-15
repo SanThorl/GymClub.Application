@@ -1,27 +1,27 @@
 ﻿using GymClub.Domain.Features.User.Login;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
+using GymClub.App.Services.Security;
 
 namespace GymClub.App.Components.Pages
 {
-    public partial class SignIn
+    public partial class P_SignIn
     {
-        private string _cookieDataStr { get; set; } = "";
         [Inject] private AuthenticationStateProvider authStateProvider { get; set; }
 
-        private LoginModel _reqModel = new LoginModel();
+        private LoginRequestModel _reqModel = new LoginRequestModel();
+        private string _cookieDataStr { get; set; } = "";
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                await _injectService.EnableLoading();
-                //var customAuthStateProvider = (CustomAuthenticationStateProvider)_authStateProvider;
+                StateHasChanged();
                 await _injectService.DisableLoading();
             }
         }
 
-        private void LogIn()
+        async Task LogIn()
         {
 
         }

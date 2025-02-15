@@ -4,7 +4,7 @@ namespace GymClub.App.Components.Pages
 {
     public partial class FirstPage
     {
-        private LoginModel _reqModel = new LoginModel();
+        private LoginRequestModel _reqModel = new LoginRequestModel();
         void SignUp()
         {
             _nav.NavigateTo("/register");

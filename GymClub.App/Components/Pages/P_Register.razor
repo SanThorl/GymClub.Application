@@ -6,7 +6,6 @@
 	<div class="col-md-12">
 		<div class="card mb-4">
 			<div class="card-body">
-
 				<div class="row">
 					<div class="mb-3 col-md-6">
 						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">User Name</RadzenText>
@@ -26,7 +25,12 @@
 					</div>
 					<div class="mb-3 col-md-6">
 						<RadzenText TextStyle="TextStyle.Subtitle2">Date Of Birth</RadzenText>
-						<RadzenTextBox @bind-value="@_reqModel.Gender" Class="w-100" />
+						<RadzenTextBox @bind-value="@_reqModel.DateOfBirth" Class="w-100" />
+					</div>
+					<div class="mb-3 col-md-4">
+						<div class="d-flex">
+							<button type="submit" class="btn btn-primary" onclick="SignUp">Sign Up</button>
+						</div>
 					</div>
 				</div>
 			</div>
