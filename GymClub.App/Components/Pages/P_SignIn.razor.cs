@@ -37,7 +37,7 @@ namespace GymClub.App.Components.Pages
                 await _injectService.ShowErrorMessage("Use Password for your privacy!");
                 return;
             }
-            model = await _signInService.SignIn(_reqModel);
+            model = await _login.SignIn(_reqModel);
             if (model.Response.IsError)
             {
                 await _injectService.ShowErrorMessage(model.Response.Message);
