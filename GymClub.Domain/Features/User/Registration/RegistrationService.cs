@@ -23,16 +23,17 @@ namespace GymClub.Domain.Features.User.Registration
         {
             RegistrationResponseModel model = new RegistrationResponseModel();
             TblUser? user = await _db.TblUsers.AsNoTracking().FirstOrDefaultAsync(x => x.PhoneNo == reqModel.PhoneNo);
-             if(user is not null)
+            if (user is not null)
             {
                 model.Response = new MessageResponseModel()
                 {
                     IsSuccess = false,
                     Message = "User Already Exist!"
                 };
+                goto result;
             }
 
-             string randomId = Guid.NewGuid().ToString();
+            string randomId = Guid.NewGuid().ToString();
 
             TblUser newUser = new TblUser()
             {
@@ -43,7 +44,7 @@ namespace GymClub.Domain.Features.User.Registration
                 Gender = reqModel.Gender,
                 JoinDate = DateTime.Today
             };
-            
+
             await _db.AddAsync(newUser);
             await _db.SaveChangesAsync();
             model.Response = new MessageResponseModel()
@@ -51,7 +52,7 @@ namespace GymClub.Domain.Features.User.Registration
                 IsSuccess = true,
                 Message = "Registered Successfully!"
             };
-
+        result:
             return model;
         }
     }

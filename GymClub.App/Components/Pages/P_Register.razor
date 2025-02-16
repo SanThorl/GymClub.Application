@@ -11,23 +11,27 @@
 			<div class="card-body">
 				<div class="row">
 					<div class="mb-3 col-md-6">
-						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">User Name</RadzenText>
+						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6" required>User Name</RadzenText>
 						<RadzenTextBox @bind-value="@_reqModel.UserName" Class="w-100" />
+						<span style="color: red;" hidden="@(!string.IsNullOrEmpty(@_reqModel.UserName))">Gender is required.</span>
 					</div>
 					<div class="mb-3 col-md-6">
-						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">Password</RadzenText>
+						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6" required>Password</RadzenText>
 						<RadzenTextBox @bind-value="@_reqModel.Password" Class="w-100" />
+						<span style="color: red;" hidden="@(!string.IsNullOrEmpty(@_reqModel.Password))">Gender is required.</span>
 					</div>
 					<div class="mb-3 col-md-6">
-						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">Phone</RadzenText>
+						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6" required>Phone</RadzenText>
 						<RadzenTextBox @bind-value="@_reqModel.PhoneNo" Class="w-100" />
+						<span style="color: red;" hidden="@(!string.IsNullOrEmpty(@_reqModel.PhoneNo))">Gender is required.</span>
 					</div>
 					<div class="mb-3 col-md-6">
-						<RadzenText TextStyle="TextStyle.Subtitle2">Gender</RadzenText>
+						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">Gender</RadzenText>
 						<RadzenTextBox @bind-value="@_reqModel.Gender" Class="w-100" />
+						<span style="color: red;" hidden="@(!string.IsNullOrEmpty(@_reqModel.Gender))">Gender is required.</span>
 					</div>
 					<div class="mb-3 col-md-6">
-						<RadzenText TextStyle="TextStyle.Subtitle2">Date Of Birth</RadzenText>
+						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">Date Of Birth</RadzenText>
 						<RadzenTextBox @bind-value="@_reqModel.DateOfBirth" Class="w-100" />
 					</div>
 					<div class="mb-3 col-md-4">

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GymClub.Domain.Features.Class
+namespace GymClub.Domain.Features.Workouts
 {
-    internal class ClassService
+    public class WorkoutModel
     {
     }
 }

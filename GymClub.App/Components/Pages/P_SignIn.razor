@@ -1,19 +1,30 @@
 ﻿@page "/signIn"
 @using GymClub.App.Components.Layout
 @layout EmptyLayout
+@inject LoginService _login
 
-<div class="align-content-center">
-    <div class="mb-3">
-        <label class="form-label">User Name</label>
-        <input class="form-control" type="text"
-               placeholder="enter name" @bind-value="_reqModel.UserName" maxlength="50" />
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Password</label>
-        <input class="form-control" type="text"
-               placeholder="enter password" @bind-value="_reqModel.Password" maxlength="50" />
-    </div>
-    <div class="float-right">
-        <button type="button" @onclick="LogIn">Sign In</button>
-    </div>
+<div class="pt-sm-3">
+	<div class="container">
+		<div class="align-content-center">
+			<div class="col-md-8 col-lg-6 col-xl-5">
+				<div class="card overflow-hidden">
+					<div class="card-body pt-2">
+						<div class="mb-3">
+							<label class="form-label">User Name</label>
+							<input class="form-control" type="text"
+								   placeholder="enter name" @bind-value="_reqModel.UserName" maxlength="50" required/>
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Password</label>
+							<input class="form-control" type="text"
+								   placeholder="enter password" @bind-value="_reqModel.Password" maxlength="50" required/>
+						</div>
+						<div class="float-right">
+							<button type="button" @onclick="LogIn">Sign In</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

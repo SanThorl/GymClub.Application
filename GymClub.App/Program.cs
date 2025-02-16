@@ -1,6 +1,7 @@
 using GymClub.App.Components;
 using GymClub.App.Services;
 using GymClub.Database.DbModels;
+using GymClub.Domain.Features.Workouts;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,8 @@ builder.Services.AddScoped<IInjectService, InjectService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
 builder.Services.AddScoped<RegistrationService>();
+builder.Services.AddScoped<LoginService>();
+builder.Services.AddScoped<WorkoutService>();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddControllersWithViews().AddJsonOptions(opt =>
 {

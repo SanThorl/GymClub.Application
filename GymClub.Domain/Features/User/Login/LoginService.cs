@@ -5,17 +5,34 @@ using System.Text;
 using System.Threading.Tasks;
 using GymClub.Database.DbModels;
 
-namespace GymClub.Domain.Features.User.Login
-{
-    public class LoginService
-    {
-        private readonly AppDbContext _db;
+namespace GymClub.Domain.Features.User.Login;
 
-        public LoginService(AppDbContext db)
+public class LoginService
+{
+    private readonly AppDbContext _db;
+
+    public LoginService(AppDbContext db)
+    {
+        _db = db;
+    }
+
+    public async Task<LoginResponseModel> SignIn(LoginRequestModel reqModel)
+    {
+        LoginResponseModel model = new LoginResponseModel();
+        TblUser? item = await _db.TblUsers.AsNoTracking().FirstOrDefaultAsync(x => x.UserName == reqModel.UserName
+        && x.Password == reqModel.Password);
+
+        if (item is null)
         {
-            _db = db;
+            model.Response = new MessageResponseModel
+            {
+                IsSuccess = false,
+                Message = "Please, fill the correct name and password"
+            };
+            goto result;
         }
 
-        //public async Task<Login>
+    result:
+        return model;
     }
 }
