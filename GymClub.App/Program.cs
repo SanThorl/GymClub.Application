@@ -1,4 +1,5 @@
 using GymClub.App.Components;
+using GymClub.App.Services;
 using GymClub.Database.DbModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,9 +14,11 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection"));
 }, ServiceLifetime.Transient, ServiceLifetime.Transient);
 
+builder.Services.AddScoped<IInjectService, InjectService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
-builder.Services.AddScoped<LoginService>();
 
+builder.Services.AddScoped<RegistrationService>();
+builder.Services.AddAuthorizationCore();
 builder.Services.AddControllersWithViews().AddJsonOptions(opt =>
 {
     opt.JsonSerializerOptions.PropertyNamingPolicy = null; // Preserve PascalCase

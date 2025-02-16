@@ -1,32 +1,55 @@
 ﻿
+using Microsoft.IdentityModel.Tokens;
+
 namespace GymClub.App.Components.Pages
 {
     public partial class P_Register
     {
-        [Inject] private AuthenticationStateProvider authStateProvider { get; set; }
         private RegistrationRequestModel _reqModel = new RegistrationRequestModel();
-        private UserSessionModel _userSession;
+        private RegistrationResponseModel model;
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                _injectService.EnableLoading();
-                var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
-                var authState = await customAuthStateProvider.GetAuthenticationStateAsync();
-                if (authState.User.Identity != null && !authState.User.Identity.IsAuthenticated)
-                {
-                    _nav.NavigateTo(Page_SignIn);
-                    return;
-                }
-
-                _userSession = await customAuthStateProvider.GetUserData();
-                _injectService.DisableLoading();
+                await _injectService.EnableLoading();
+                
+                StateHasChanged();
+                await _injectService.DisableLoading();
             }
         }
-        private void SignUp()
+        async Task SignUp()
         {
+            if (_reqModel.UserName.IsNullOrEmpty())
+            {
+                await _injectService.ShowErrorMessage("User Name is Requied!");
+                return;
+            }
+            if (_reqModel.Password.IsNullOrEmpty())
+            {
+                await _injectService.ShowErrorMessage("Use Password for your privacy!");
+                return;
+            }
+            if (_reqModel.PhoneNo.IsNullOrEmpty())
+            {
+                await _injectService.ShowErrorMessage("Phone Number is Requied!");
+                return;
+            }
+            if (_reqModel.Gender.IsNullOrEmpty())
+            {
+                await _injectService.ShowErrorMessage("Please Mention your Gender!");
+                return;
+            }
 
+            model = await _registrationService.RegisterUser(_reqModel);
+            if (model.Response.IsError)
+            {
+                await _injectService.ShowErrorMessage(model.Response.Message);
+                return;
+            }
+            await _injectService.ShowSuccessMessage(model.Response.Message);
+            _nav.NavigateTo("/signIn");
+            StateHasChanged();
         }
-
     }
 }
+    

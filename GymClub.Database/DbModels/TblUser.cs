@@ -5,19 +5,19 @@ namespace GymClub.Database.DbModels;
 
 public partial class TblUser
 {
-    public int UserId { get; set; }
+    public string UserId { get; set; } = null!;
 
     public string UserName { get; set; } = null!;
 
-    public string Phone { get; set; } = null!;
+    public string PhoneNo { get; set; } = null!;
 
     public string Password { get; set; } = null!;
 
     public string Gender { get; set; } = null!;
 
-    public DateOnly? DateOfBirth { get; set; }
+    public DateTime? DateOfBirth { get; set; }
 
-    public DateOnly JoinDate { get; set; }
+    public DateTime JoinDate { get; set; }
 
     public bool? DelFlag { get; set; }
 }

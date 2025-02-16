@@ -11,6 +11,8 @@ namespace GymClub.Domain.Models
     {
         public bool IsSuccess { get; set; }
 
+        public bool IsError { get { return !IsSuccess; } }
+
         public string Message { get; set; }
     }
 }

@@ -1,4 +1,7 @@
-﻿using Microsoft.JSInterop;
+﻿using GymClub.Domain.Models;
+using Microsoft.JSInterop;
+using MudBlazor;
+using Radzen;
 
 namespace GymClub.App.Services
 {
@@ -19,6 +22,16 @@ namespace GymClub.App.Services
         public async Task DisableLoading()
         {
             await _jSRuntime.InvokeVoidAsync("enableLoading", false);
+        }
+
+        public async Task ShowErrorMessage(string message)
+        {
+            await _jSRuntime.InvokeVoidAsync("errorMessage", message);
+        }
+
+        public async Task ShowSuccessMessage(string message)
+        {
+            await _jSRuntime.InvokeVoidAsync("successMessage", message);
         }
     }
 }

@@ -1,6 +1,9 @@
 ﻿@page "/register"
+@using GymClub.App.Components.Layout
 @using Radzen
 @using Radzen.Blazor
+@inject RegistrationService _registrationService
+@layout EmptyLayout
 
 <div class="row">
 	<div class="col-md-12">
@@ -8,16 +11,16 @@
 			<div class="card-body">
 				<div class="row">
 					<div class="mb-3 col-md-6">
-						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">User Name</RadzenText>
+						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">User Name</RadzenText>
 						<RadzenTextBox @bind-value="@_reqModel.UserName" Class="w-100" />
 					</div>
 					<div class="mb-3 col-md-6">
-						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Password</RadzenText>
+						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">Password</RadzenText>
 						<RadzenTextBox @bind-value="@_reqModel.Password" Class="w-100" />
 					</div>
 					<div class="mb-3 col-md-6">
-						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Phone</RadzenText>
-						<RadzenTextBox @bind-value="@_reqModel.Phone" Class="w-100" />
+						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">Phone</RadzenText>
+						<RadzenTextBox @bind-value="@_reqModel.PhoneNo" Class="w-100" />
 					</div>
 					<div class="mb-3 col-md-6">
 						<RadzenText TextStyle="TextStyle.Subtitle2">Gender</RadzenText>
@@ -29,7 +32,7 @@
 					</div>
 					<div class="mb-3 col-md-4">
 						<div class="d-flex">
-							<button type="submit" class="btn btn-primary" onclick="SignUp">Sign Up</button>
+							<button type="submit" class="btn btn-primary" @onclick="SignUp">Sign Up</button>
 						</div>
 					</div>
 				</div>

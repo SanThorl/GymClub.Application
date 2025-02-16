@@ -1,7 +1,7 @@
 ﻿var interval;
-$(document).ready(function () {
-    enableLoading(false);
-})
+//$(document).ready(function () {
+//    enableLoading(false);
+//})
 
 Notiflix.Loading.init({
     svgColor: '#5ACCE5',
@@ -15,4 +15,21 @@ window.enableLoading = function (start) {
     } else {
         Notiflix.Loading.remove();
     }
+}
+window.successMessage = (message) => {
+    console.log("Success");
+    Notiflix.Report.success(
+        'Success!',
+        message,
+        'Ok',
+    );
+}
+
+window.errorMessage = (message) => {
+
+    Notiflix.Report.failure(
+        'Error!',
+        message,
+        'Ok',
+    );
 }
