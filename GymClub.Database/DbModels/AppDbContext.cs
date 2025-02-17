@@ -19,6 +19,8 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<TblUser> TblUsers { get; set; }
 
+    public virtual DbSet<TblWorkout> TblWorkouts { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<TblLogin>(entity =>
@@ -61,6 +63,26 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(11)
                 .IsUnicode(false);
             entity.Property(e => e.UserName).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<TblWorkout>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Tbl_Workout");
+
+            entity.Property(e => e.Level)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Place)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.WId)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("W_ID");
+            entity.Property(e => e.WorkoutName)
+                .HasMaxLength(100)
+                .IsUnicode(false);
         });
 
         OnModelCreatingPartial(modelBuilder);
