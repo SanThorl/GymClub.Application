@@ -1,4 +1,4 @@
-﻿var interval;
+﻿//var interval;
 //$(document).ready(function () {
 //    enableLoading(false);
 //})

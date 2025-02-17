@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GymClub.Database.DbModels;
-using GymClub.Domain.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+﻿using GymClub.Database.DbModels;
 
 namespace GymClub.Domain.Features.User.Registration
 {
     public class RegistrationService
     {
         private readonly AppDbContext _db;
-
         public RegistrationService(AppDbContext db)
         {
             _db = db;
@@ -33,11 +24,11 @@ namespace GymClub.Domain.Features.User.Registration
                 goto result;
             }
 
-            string randomId = Guid.NewGuid().ToString();
+            var ulid = Ulid.NewUlid().ToString();
 
             TblUser newUser = new TblUser()
             {
-                UserId = randomId,
+                UserId = ulid,
                 UserName = reqModel.UserName,
                 PhoneNo = reqModel.PhoneNo,
                 Password = reqModel.Password,

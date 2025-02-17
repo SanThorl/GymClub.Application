@@ -41,12 +41,13 @@ namespace GymClub.App.Components.Pages
             if (model.Response.IsError)
             {
                 await _injectService.ShowErrorMessage(model.Response.Message);
-                return;
+                _nav.NavigateTo("/signIn");
             }
             var userSessionModel = new UserSessionModel
             {
                 UserName = model.UserName,
                 UserId = model.UserId,
+                SessionId = model.SessionId
             };
             var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
             await customAuthStateProvider.UpdateAuthenticationState(userSessionModel);

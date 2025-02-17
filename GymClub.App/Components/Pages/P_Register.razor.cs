@@ -1,4 +1,5 @@
 ﻿
+using GymClub.Shared;
 using Microsoft.IdentityModel.Tokens;
 
 namespace GymClub.App.Components.Pages
@@ -50,6 +51,12 @@ namespace GymClub.App.Components.Pages
             _nav.NavigateTo("/signIn");
             StateHasChanged();
         }
+
+        //private async Task OnChangeBySexual(object value)
+        //{
+        //    _reqModel.Gender = value.ToEnum<Sexual>();
+        //    StateHasChanged();
+        //}
     }
 }
     

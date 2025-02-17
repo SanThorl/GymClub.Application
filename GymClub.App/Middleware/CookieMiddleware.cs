@@ -19,7 +19,8 @@
         private string[] Path =
         {
             "/",
-            "/SignIn"
+            "/SignIn",
+            "/_framework/blazor.web.js",
         };
     }
 }

@@ -23,7 +23,7 @@ namespace GymClub.App.Services
         {
             await _jSRuntime.InvokeVoidAsync("enableLoading", false);
         }
-
+        
         public async Task ShowErrorMessage(string message)
         {
             await _jSRuntime.InvokeVoidAsync("errorMessage", message);

@@ -1,6 +1,25 @@
 ﻿@page "/workout"
-<h3>P_Workout</h3>
+@using GymClub.App.Components.Layout
+@layout MainLayout
 
-@code {
+<h3>Workout</h3>
 
-}
+@* <RadzenCard Style="position: relative; background-image: url('/images/iconicOne.jpg'); background-size: cover; background-position: center; height: 250px;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+        <h3>Welcome to Radzen Blazor</h3>
+        <p>Enhance your UI with Blazor and Radzen components.</p>
+    </div>
+</RadzenCard> *@
+
+<MudCard Class="my-5">
+    <!-- Image Section -->
+    <MudCardMedia Image="/images/iconicOne.jpg" Alt="Sample Image" />
+
+    <!-- Card Content Section -->
+    <MudCardContent>
+        <MudText Typo="Typo.h6">Sample Card Title</MudText>
+        <MudText Typo="Typo.body1">
+            This is some description text that goes under the image. You can add more content here to explain something about the image or give more context.
+        </MudText>
+    </MudCardContent>
+</MudCard>

@@ -45,5 +45,17 @@ namespace GymClub.Shared
 
             return default;
         }
+
+        public static T ToEnum<T>(this string? l_Value) where T : Enum
+        {
+            try
+            {
+                return (T)Enum.Parse(typeof(T), l_Value, true);
+            }
+            catch
+            {
+                return (T)Enum.ToObject(typeof(T), 0);
+            }
+        }
     }
 }

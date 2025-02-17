@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ulid" Version="1.3.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\GymClub.Database\GymClub.Database.csproj" />
+    <ProjectReference Include="..\GymClub.Shared\GymClub.Shared.csproj" />
   </ItemGroup>
 
 </Project>

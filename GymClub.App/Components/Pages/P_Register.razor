@@ -1,47 +1,62 @@
 ﻿@page "/register"
 @using GymClub.App.Components.Layout
-@using Radzen
-@using Radzen.Blazor
+@using GymClub.Shared
 @inject RegistrationService _registrationService
 @layout EmptyLayout
+@rendermode RenderMode.InteractiveServer
 
-<div class="row">
-	<div class="col-md-12">
-		<div class="card mb-4">
-			<div class="card-body">
-				<div class="row">
-					<div class="mb-3 col-md-6">
-						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6" required>User Name</RadzenText>
-						<RadzenTextBox @bind-value="@_reqModel.UserName" Class="w-100" />
-						<span style="color: red;" hidden="@(!string.IsNullOrEmpty(@_reqModel.UserName))">Gender is required.</span>
-					</div>
-					<div class="mb-3 col-md-6">
-						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6" required>Password</RadzenText>
-						<RadzenTextBox @bind-value="@_reqModel.Password" Class="w-100" />
-						<span style="color: red;" hidden="@(!string.IsNullOrEmpty(@_reqModel.Password))">Gender is required.</span>
-					</div>
-					<div class="mb-3 col-md-6">
-						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6" required>Phone</RadzenText>
-						<RadzenTextBox @bind-value="@_reqModel.PhoneNo" Class="w-100" />
-						<span style="color: red;" hidden="@(!string.IsNullOrEmpty(@_reqModel.PhoneNo))">Gender is required.</span>
-					</div>
-					<div class="mb-3 col-md-6">
-						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">Gender</RadzenText>
-						<RadzenTextBox @bind-value="@_reqModel.Gender" Class="w-100" />
-						<span style="color: red;" hidden="@(!string.IsNullOrEmpty(@_reqModel.Gender))">Gender is required.</span>
-					</div>
-					<div class="mb-3 col-md-6">
-						<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">Date Of Birth</RadzenText>
-						<RadzenTextBox @bind-value="@_reqModel.DateOfBirth" Class="w-100" />
-					</div>
-					<div class="mb-3 col-md-4">
-						<div class="d-flex">
-							<button type="submit" class="btn btn-primary" @onclick="SignUp">Sign Up</button>
+<EditForm Model="@_reqModel" OnValidSubmit="SignUp">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
+
+	<div class="row justify-content-center mt-3">
+		<div class="col-md-6">
+			<div class="card mb-4">
+				<div class="card-header">
+					<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H2">User Registration</RadzenText>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="mb-3 col-md-6">
+							<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">User Name</RadzenText>
+							<RadzenTextBox @bind-Value="@_reqModel.UserName" Class="w-100" />
+							<ValidationMessage For="@(() => _reqModel.UserName)" />
+						</div>
+						<div class="mb-3 col-md-6">
+							<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">Password</RadzenText>
+							<RadzenPassword @bind-Value="@_reqModel.Password" Class="w-100" />
+							<ValidationMessage For="@(() => _reqModel.Password)" />
+						</div>
+						<div class="mb-3 col-md-6">
+							<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">Phone</RadzenText>
+							<RadzenTextBox @bind-Value="@_reqModel.PhoneNo" Class="w-100" />
+							<ValidationMessage For="@(() => _reqModel.PhoneNo)" />
+						</div>
+						<div class="mb-3 col-md-6">
+							<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">Gender</RadzenText>
+							<RadzenRadioButtonList @bind-Value="@_reqModel.Gender"
+												   Data="@(new List<string> { "Male", "Female" })"
+												   Layout="Orientation.Horizontal"
+												   Class="d-flex gap-3" />
+							<ValidationMessage For="@(() => _reqModel.Gender)" />
+						</div>
+						<div class="mb-3 col-md-6">
+							<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">Date Of Birth</RadzenText>
+							<RadzenDatePicker @bind-Value="_reqModel.DateOfBirth" Name="DateOfBirth"
+                                  DateFormat="dd-MM-yyyy"
+                                  Max="DateTime.Today"
+                                  AllowInput="false"
+                                  Class="w-100"/>
+						</div>
+
+						<div class="mb-3 col-md-4">
+							<div class="d-flex">
+								<RadzenButton ButtonStyle="ButtonStyle.Primary" Text="Sign Up" Type="Submit" />
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
-
+</EditForm>

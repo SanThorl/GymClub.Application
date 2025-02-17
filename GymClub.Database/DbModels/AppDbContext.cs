@@ -30,6 +30,10 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.UserId)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.SessionExpiredDate).HasColumnType("datetime");
+            entity.Property(e => e.SessionId)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.UserName)
                 .HasMaxLength(50)
                 .IsUnicode(false);

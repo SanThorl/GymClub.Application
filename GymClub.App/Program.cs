@@ -3,6 +3,8 @@ using GymClub.App.Services;
 using GymClub.Database.DbModels;
 using GymClub.Domain.Features.Workouts;
 using Microsoft.EntityFrameworkCore;
+using MudBlazor.Services;
+using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,10 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 builder.Services.AddScoped<IInjectService, InjectService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
+builder.Services.AddMudServices();
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
+builder.Services.AddRadzenComponents();
 builder.Services.AddScoped<RegistrationService>();
 builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<WorkoutService>();
