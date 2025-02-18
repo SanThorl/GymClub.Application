@@ -49,8 +49,8 @@ namespace GymClub.App.Components.Pages
                 UserId = model.UserId,
                 SessionId = model.SessionId
             };
-            var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
-            await customAuthStateProvider.UpdateAuthenticationState(userSessionModel);
+            //var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
+            //await customAuthStateProvider.UpdateAuthenticationState(userSessionModel);
             _nav.NavigateTo("/workout");
         }
     }

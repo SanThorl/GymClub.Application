@@ -34,19 +34,19 @@ public class LoginService
 
         string sessionId = Guid.NewGuid().ToString();
         
-        TblLogin login = new TblLogin
-        {
-            SessionId = sessionId,
-            SessionExpiredDate = DateTime.UtcNow.AddHours(1),
-            UserId = item.UserId,
-            UserName = item.UserName
-        };
+        //TblLogin login = new TblLogin
+        //{
+        //    SessionId = sessionId,
+        //    SessionExpiredDate = DateTime.UtcNow.AddHours(1),
+        //    UserId = item.UserId,
+        //    UserName = item.UserName
+        //};
 
-        await _db.TblLogins.AddAsync(login);
-        await _db.SaveChangesAsync();
+        //await _db.TblLogins.AddAsync(login);
+        //await _db.SaveChangesAsync();
 
-        model.UserId = login.UserId;
-        model.SessionId = login.SessionId;
+        //model.UserId = login.UserId;
+        //model.SessionId = login.SessionId;
         model.UserName = item.UserName;
         model.Response = new MessageResponseModel
         {
