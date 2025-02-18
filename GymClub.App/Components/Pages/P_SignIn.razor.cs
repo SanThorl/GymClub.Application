@@ -9,7 +9,7 @@ namespace GymClub.App.Components.Pages
 {
     public partial class P_SignIn
     {
-        [Inject] private AuthenticationStateProvider authStateProvider { get; set; }
+        //[Inject] private AuthenticationStateProvider authStateProvider { get; set; }
 
         private LoginRequestModel _reqModel = new LoginRequestModel();
         private LoginResponseModel model;
@@ -43,12 +43,12 @@ namespace GymClub.App.Components.Pages
                 await _injectService.ShowErrorMessage(model.Response.Message);
                 _nav.NavigateTo("/signIn");
             }
-            var userSessionModel = new UserSessionModel
-            {
-                UserName = model.UserName,
-                UserId = model.UserId,
-                SessionId = model.SessionId
-            };
+            //var userSessionModel = new UserSessionModel
+            //{
+            //    UserName = model.UserName,
+            //    UserId = model.UserId,
+            //    SessionId = model.SessionId
+            //};
             //var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
             //await customAuthStateProvider.UpdateAuthenticationState(userSessionModel);
             _nav.NavigateTo("/workout");

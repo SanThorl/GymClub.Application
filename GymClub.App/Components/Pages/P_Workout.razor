@@ -3,6 +3,7 @@
 @using GymClub.Domain.Features.Workouts
 @layout MainLayout
 @inject WorkoutService _workout
+@rendermode RenderMode.InteractiveServer
 
 
 <h3>Select Your Workout Plan</h3>
@@ -13,15 +14,20 @@
 		int count = 0;
 		@foreach (var data in lst)
 		{
-			<div class="col pt-sm-2">
-				<div style="width: 150px; margin: auto;">
-					<MudCard Class="my-5" @onclick="() => Session(data)">
+			<div class="col pt-sm-2 mb-3">
+				<div style="width: 350px; height: 300px; margin: auto">
+					<MudCard Class="my-5" @onclick="() => WorkoutCollection(data)">
 						<!-- Image Section -->
-						<MudCardMedia Image="/images/gym@count++.jpg" Alt="Sample Image" />
+						@* <MudCardMedia Image="/images/gym@(count++).jpg" Alt="Sample Image" /> *@
+						<MudCardMedia Image=@($"/images/gym{count++}.jpg") 
+										Alt="@data.WorkoutName" 
+										Fit="ObjectFit.Contain" 
+										Width ="320"
+										Height="255"/>
 
 						<!-- Card Content Section -->
 						<MudCardContent>
-							<MudText Typo="Typo.h6">@data.WorkoutName</MudText>
+							<MudText Typo="Typo.h5" Bold="true">@data.WorkoutName</MudText>
 							<MudText Typo="Typo.body1">@data.Level</MudText>
 							<MudText Typo="Typo.body1">@data.Place</MudText>
 						</MudCardContent>
@@ -29,8 +35,6 @@
 				</div>
 			</div>
 		}
-
-
 	}
 </div>
 
@@ -50,7 +54,8 @@
 		lst = model.lstData;
 	}
 
-	private async Task Session(WorkoutModel workout){
-
+	private async Task WorkoutCollection(WorkoutModel workout)
+	{
+		Console.WriteLine("Something!");
 	}
 }

@@ -42,11 +42,14 @@
 						</div>
 						<div class="mb-3 col-md-6">
 							<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">Date Of Birth</RadzenText>
-							<RadzenDatePicker @bind-Value="_reqModel.DateOfBirth" Name="DateOfBirth"
+							@* <RadzenDatePicker @bind-Value="_reqModel.DateOfBirth" Name="DateOfBirth"
                                   DateFormat="dd-MM-yyyy"
                                   Max="DateTime.Today"
                                   AllowInput="false"
-                                  Class="w-100"/>
+                                  Class="w-100"/> *@
+							<RadzenDatePicker @bind-Value="@_reqModel.DateOfBirth"
+											  Max="DateTime.Today"
+											  Name="DOB" />
 						</div>
 
 						<div class="mb-3 col-md-4">
