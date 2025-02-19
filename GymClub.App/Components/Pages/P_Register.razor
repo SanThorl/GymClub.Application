@@ -1,6 +1,7 @@
 ﻿@page "/register"
 @using GymClub.App.Components.Layout
 @using GymClub.Shared
+@using Radzen.Blazor
 @inject RegistrationService _registrationService
 @layout EmptyLayout
 @rendermode RenderMode.InteractiveServer
@@ -25,7 +26,11 @@
 						<div class="mb-3 col-md-6">
 							<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">Password</RadzenText>
 							<RadzenPassword @bind-Value="@_reqModel.Password" Class="w-100" />
-							<ValidationMessage For="@(() => _reqModel.Password)" />
+							<button class="btn btn-outline-secondary mb-3" @onclick="TogglePasswordVisibility" type="button" data-id="txtPassword" data-icon="btnPasswordIcon" data-visible="on" id="btnPassword">
+								<i id="btnPasswordIcon" class="fa-solid fa-eye-slash"></i>
+							</button>
+
+							@* <ValidationMessage For="@(() => _reqModel.Password)" /> *@
 						</div>
 						<div class="mb-3 col-md-6">
 							<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">Phone</RadzenText>
@@ -47,12 +52,12 @@
                                   Max="DateTime.Today"
                                   AllowInput="false"
                                   Class="w-100"/> *@
-							<RadzenDatePicker @bind-Value="@_reqModel.DateOfBirth"
-											  Max="DateTime.Today"
-											  Name="DOB" />
+							<div class="input-group">
+								<RadzenDatePicker @bind-Value=@_reqModel.DateOfBirth Name="DOB" ShowCalendarWeek />
+							</div>
 						</div>
-
 						<div class="mb-3 col-md-4">
+							<div></div>
 							<div class="d-flex">
 								<RadzenButton ButtonStyle="ButtonStyle.Primary" Text="Sign Up" Type="Submit" />
 							</div>

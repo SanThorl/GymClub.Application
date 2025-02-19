@@ -9,5 +9,6 @@ namespace GymClub.App.Services
         Task DisableLoading();
         Task ShowSuccessMessage(string message);
         Task ShowErrorMessage(string message);
+        Task TogglePasswordVisibility();
     }
 }

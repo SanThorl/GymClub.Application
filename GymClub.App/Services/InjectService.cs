@@ -33,5 +33,10 @@ namespace GymClub.App.Services
         {
             await _jSRuntime.InvokeVoidAsync("successMessage", message);
         }
+
+        public async Task TogglePasswordVisibility()
+        {
+            await _jSRuntime.InvokeVoidAsync("passwordToggle", "btnPassword");
+        }
     }
 }

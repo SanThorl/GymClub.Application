@@ -1,0 +1,16 @@
+﻿.rz-datepicker.rz-popup {
+    top: 140px !important;
+}
+
+.rz-datepicker-popup-container.rz-popup {
+    top: 140px !important;
+}
+
+/* Hide the password reveal button in Microsoft Edge */
+::-ms-reveal {
+    display: none;
+}
+
+.text-velvet {
+    color: #8A2BE2 !important; /* Violet Color */
+}

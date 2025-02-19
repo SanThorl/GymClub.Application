@@ -13,7 +13,6 @@ namespace GymClub.App.Components.Pages
 
         private LoginRequestModel _reqModel = new LoginRequestModel();
         private LoginResponseModel model;
-        private string _cookieDataStr { get; set; } = "";
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -38,6 +37,7 @@ namespace GymClub.App.Components.Pages
                 return;
             }
             model = await _login.SignIn(_reqModel);
+
             if (model.Response.IsError)
             {
                 await _injectService.ShowErrorMessage(model.Response.Message);
@@ -52,6 +52,11 @@ namespace GymClub.App.Components.Pages
             //var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
             //await customAuthStateProvider.UpdateAuthenticationState(userSessionModel);
             _nav.NavigateTo("/workout");
+        }
+
+        private async Task TogglePasswordVisibility()
+        {
+            await _injectService.TogglePasswordVisibility();
         }
     }
 }

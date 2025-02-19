@@ -12,13 +12,17 @@
 					<div class="card-body pt-2">
 						<div class="mb-3">
 							<label class="form-label">User Name</label>
-							<input class="form-control" type="text"
-								   placeholder="enter name" @bind-value="_reqModel.UserName" maxlength="50" required/>
+							<input class="form-control mb-3" type="text"
+								   placeholder="enter name" @bind-value="_reqModel.UserName" maxlength="50" required />
 						</div>
 						<div class="mb-3">
 							<label class="form-label">Password</label>
-							<input class="form-control" type="text"
-								   placeholder="enter password" @bind-value="_reqModel.Password" maxlength="50" required/>
+							<div class="input-group mb-3">
+								<input type="password" class="form-control mb-3" id="txtPassword" placeholder="EnterPassword" aria-label="Password" aria-describedby="button-addon2" required maxlength="50" @bind="_reqModel.Password">
+								<button class="btn btn-outline-secondary mb-3" @onclick="TogglePasswordVisibility" type="button" data-id="txtPassword" data-icon="btnPasswordIcon" data-visible="on" id="btnPassword">
+									<i id="btnPasswordIcon" class="bi-eye-slash-fill"></i>
+								</button>
+							</div>
 						</div>
 						<div class="float-right">
 							<button type="button" @onclick="LogIn">Sign In</button>

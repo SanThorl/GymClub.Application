@@ -57,6 +57,10 @@ namespace GymClub.App.Components.Pages
         //    _reqModel.Gender = value.ToEnum<Sexual>();
         //    StateHasChanged();
         //}
+        private async Task TogglePasswordVisibility()
+        {
+            await _injectService.TogglePasswordVisibility();
+        }
     }
 }
     

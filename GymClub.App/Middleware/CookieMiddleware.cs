@@ -19,7 +19,13 @@
         private string[] Path =
         {
             "/",
-            "/SignIn",
+            "/_blazor",
+            "/_blazor/initializers",
+            "/_blazor/negotiate",
+            "/notificationHub/negotiate",
+            "/notificationHub",
+            "/register",
+            "/signIn",
             "/_framework/blazor.web.js",
         };
     }

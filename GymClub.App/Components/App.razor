@@ -8,19 +8,26 @@
     <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" href="bootstrap/bootstrap-grid.min.css" />
     <link rel="stylesheet" href="bootstrap/bootstrap-reboot.min.css" />
+    <link rel="stylesheet" href="bootstrap/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="app.css" />
     <link rel="stylesheet" href="GymClub.App.styles.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="custom.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="_content/Radzen.Blazor/css/material-base.css">
+    <link rel="stylesheet" href="Loader.css" />
+    <link rel="stylesheet" href="custom.css" />
 
     <HeadOutlet @rendermode="InteractiveServer" />
 </head>
 
-<body>
+<body style="background: #D8BFD8;">
+    @* <div class="loading" id="loading">Loading&#8230;</div> *@
     <Routes @rendermode="InteractiveServer" />
     <script src="_framework/blazor.web.js"></script>
     <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
     <!--notiflix-->
     <script src="/plugins/notiflix-3-2-7/notiflix-aio-3.2.7.min.js"></script>
+    <script src="jquery/jquery.min.js"></script>
     <script src="custom.js"></script>
 
 </body>
