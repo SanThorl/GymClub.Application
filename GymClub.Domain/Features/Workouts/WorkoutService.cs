@@ -5,21 +5,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GymClub.Domain.Features.Workouts
+namespace GymClub.Domain.Features.Workouts;
+
+public class WorkoutService
 {
-    public class WorkoutService
+    private readonly AppDbContext _db;
+
+    public WorkoutService(AppDbContext db)
     {
-        private readonly AppDbContext _db;
+        _db = db;
+    }
 
-        public WorkoutService(AppDbContext db)
+    public async Task<WorkoutResponseModel> GetWorkoutList()
+    {
+        WorkoutResponseModel model = new WorkoutResponseModel();
+        try
         {
-            _db = db;
-        }
-
-        public async Task<WorkoutResponseModel> GetWorkoutList()
-        {
-            WorkoutResponseModel model = new WorkoutResponseModel();
-
             var lst = await _db.TblWorkouts.AsNoTracking().ToListAsync();
 
             if (lst is null)
@@ -43,8 +44,57 @@ namespace GymClub.Domain.Features.Workouts
                 IsSuccess = true,
                 Message = "The clock is ticking. Go on, keep building the person you want to be!"
             };
-        result:
-            return model;
         }
+        catch(Exception ex)
+        {
+            model.Response = new MessageResponseModel
+            {
+                IsSuccess = false,
+                Message = ex.Message
+            };
+        }
+        
+    result:
+        return model;
+    }
+
+    public async Task<WorkoutResponseModel> GetWorkoutById(int id)
+    {
+        WorkoutResponseModel model = new WorkoutResponseModel();
+        try 
+        {
+            var data = await _db.TblWorkouts.AsNoTracking().FirstOrDefaultAsync(x => x.Wid == id);
+            if (data is null)
+            {
+                model.Response = new MessageResponseModel
+                {
+                    IsSuccess = false,
+                    Message = "Workout is not available now!"
+                };
+                goto result;
+            }
+            model.Data = new WorkoutModel
+            {
+                WorkoutName = data.WorkoutName,
+                Place = data.Place,
+                Level = data.Level
+            };
+            model.Response = new MessageResponseModel
+            {
+                IsSuccess = true,
+                Message = "The clock is ticking. Go on, keep building the person you want to be!"
+            };
+        }
+        catch (Exception ex)
+        {
+            model.Response = new MessageResponseModel
+            {
+                IsSuccess = false,
+                Message = ex.Message
+            };
+        }
+
+    result:
+        return model;
     }
 }

@@ -15,6 +15,8 @@ public partial class AppDbContext : DbContext
     {
     }
 
+    public virtual DbSet<TblExercise> TblExercises { get; set; }
+
     public virtual DbSet<TblLogin> TblLogins { get; set; }
 
     public virtual DbSet<TblUser> TblUsers { get; set; }
@@ -23,17 +25,32 @@ public partial class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<TblExercise>(entity =>
+        {
+            entity.HasKey(e => e.Eid);
+
+            entity.ToTable("Tbl_Exercise");
+
+            entity.Property(e => e.Eid).HasColumnName("EId");
+            entity.Property(e => e.EName)
+                .HasMaxLength(80)
+                .IsUnicode(false)
+                .HasColumnName("E_Name");
+            entity.Property(e => e.Wid).HasColumnName("WId");
+        });
+
         modelBuilder.Entity<TblLogin>(entity =>
         {
-            entity.HasKey(e => e.UserId);
+            entity
+                .HasNoKey()
+                .ToTable("Tbl_Login");
 
-            entity.ToTable("Tbl_Login");
-
-            entity.Property(e => e.UserId)
-                .HasMaxLength(50)
-                .IsUnicode(false);
+            entity.Property(e => e.LoginId).ValueGeneratedOnAdd();
             entity.Property(e => e.SessionExpiredDate).HasColumnType("datetime");
             entity.Property(e => e.SessionId)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.UserId)
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.UserName)
@@ -77,9 +94,9 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Place)
                 .HasMaxLength(50)
                 .IsUnicode(false);
-            entity.Property(e => e.WId)
+            entity.Property(e => e.Wid)
                 .ValueGeneratedOnAdd()
-                .HasColumnName("W_ID");
+                .HasColumnName("WId");
             entity.Property(e => e.WorkoutName)
                 .HasMaxLength(100)
                 .IsUnicode(false);

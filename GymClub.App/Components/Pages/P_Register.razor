@@ -25,12 +25,14 @@
 						</div>
 						<div class="mb-3 col-md-6">
 							<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">Password</RadzenText>
-							<RadzenPassword @bind-Value="@_reqModel.Password" Class="w-100" />
-							<button class="btn btn-outline-secondary mb-3" @onclick="TogglePasswordVisibility" type="button" data-id="txtPassword" data-icon="btnPasswordIcon" data-visible="on" id="btnPassword">
-								<i id="btnPasswordIcon" class="fa-solid fa-eye-slash"></i>
-							</button>
-
-							@* <ValidationMessage For="@(() => _reqModel.Password)" /> *@
+							<div class="input-group mb-3">
+								@* <RadzenPassword @bind-Value="@_reqModel.Password" id="txtPassword" Class="w-100" /> *@
+								<input type="password" class="form-control mb-3" id="txtPassword" placeholder="EnterPassword" aria-label="Password" aria-describedby="button-addon2" required maxlength="50" @bind="_reqModel.Password">
+								<button class="btn btn-outline-secondary mb-3" @onclick="TogglePasswordVisibility" type="button" data-id="txtPassword" data-icon="btnPasswordIcon" data-visible="on" id="btnPassword">
+									<i id="btnPasswordIcon" class="bi-eye-slash-fill"></i>
+								</button>
+							</div>
+							<ValidationMessage For="@(() => _reqModel.Password)" />
 						</div>
 						<div class="mb-3 col-md-6">
 							<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">Phone</RadzenText>
@@ -57,7 +59,7 @@
 							</div>
 						</div>
 						<div class="mb-3 col-md-4">
-							<div></div>
+							<br />
 							<div class="d-flex">
 								<RadzenButton ButtonStyle="ButtonStyle.Primary" Text="Sign Up" Type="Submit" />
 							</div>
