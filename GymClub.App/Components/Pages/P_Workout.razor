@@ -4,11 +4,12 @@
 @layout MainLayout
 @inject WorkoutService _workout
 @rendermode RenderMode.InteractiveServer
+@using Radzen
+@using Radzen.Blazor
 
+<RadzenText TextAlign="TextAlign.Center" TagName="TagName.H5">Select Your Workout Plan</RadzenText>
 
-<h3>Select Your Workout Plan</h3>
-
-<div class="row">
+@* <div class="row">
 	@if (lst is not null)
 	{
 		int count = 0;
@@ -18,7 +19,6 @@
 				<div style="width: 350px; height: 300px; margin: auto">
 					<MudCard Class="my-5" @onclick="() => WorkoutCollection(data)">
 						<!-- Image Section -->
-						@* <MudCardMedia Image="/images/gym@(count++).jpg" Alt="Sample Image" /> *@
 						<MudCardMedia Image=@($"/images/gym{count++}.jpg") 
 										Alt="@data.WorkoutName" 
 										Fit="ObjectFit.Contain" 
@@ -36,9 +36,34 @@
 			</div>
 		}
 	}
-</div>
+</div> *@
 
+@if (lst is not null){
+<RadzenDataList TItem="WorkoutModel" Data="@lst" PageSize="6" WrapItems="true" AllowPaging="true" >
+	<Template Context="data">
+			<RadzenCard Style="width: 250px; cursor: pointer;" Class="rz-border-radius-3" @onclick="() => WorkoutCollection(data)">
+			<!-- Divider -->
+			<hr style="border: none; background-color: rgba(0,0,0,.08); height: 1px; margin: 1rem 0;" />
 
+			<!-- Image and Details -->
+			<RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="Radzen.AlignItems.Center" Gap="1rem">
+				<RadzenImage Path=@($"/images/gym{lst.IndexOf(data)}.jpg")
+							 Class="rz-border-radius-10"
+							 Style="width: 80px; height: 80px; object-fit: cover;"
+							 AlternateText="@data.WorkoutName" />
+
+				<RadzenStack Gap="0">
+					<RadzenText TextStyle="TextStyle.Subtitle1" Class="rz-mb-0">
+						<strong>@data.WorkoutName</strong>
+					</RadzenText>
+					<RadzenText TextStyle="TextStyle.Body2" Class="rz-mb-0">@data.Level</RadzenText>
+					<RadzenText TextStyle="TextStyle.Caption" Class="rz-mb-0">@data.Place</RadzenText>
+				</RadzenStack>
+			</RadzenStack>
+		</RadzenCard>
+	</Template>
+</RadzenDataList>
+}
 
 @code {
 	private WorkoutResponseModel model;
