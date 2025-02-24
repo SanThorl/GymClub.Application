@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,7 +37,8 @@ public class WorkoutService
             {
                 WorkoutName = x.WorkoutName,
                 Place = x.Place,
-                Level = x.Level
+                Level = x.Level,
+                WId = x.Wid
             }).ToList();
 
             model.Response = new MessageResponseModel
@@ -63,7 +65,7 @@ public class WorkoutService
         WorkoutResponseModel model = new WorkoutResponseModel();
         try 
         {
-            var data = await _db.TblWorkouts.AsNoTracking().FirstOrDefaultAsync(x => x.Wid == id);
+            var data = await _db.TblWorkouts.FirstOrDefaultAsync(x => x.Wid == id);
             if (data is null)
             {
                 model.Response = new MessageResponseModel
@@ -77,8 +79,25 @@ public class WorkoutService
             {
                 WorkoutName = data.WorkoutName,
                 Place = data.Place,
-                Level = data.Level
+                Level = data.Level,
+                WId = data.Wid
             };
+
+            var days = await _db.TblExercises
+                .AsNoTracking()
+                .Where(x => x.Wid == id)
+                .Select(x => new ExerciseModel
+                {
+                    EName = x.EName,
+                    Wid = x.Wid,
+                    Day = x.Day,
+                    Time = x.Time,
+                    Calories = x.Calories,
+                    DelFlag = x.DelFlag
+                })
+                .Distinct().ToListAsync();
+
+            model.EList = days;
             model.Response = new MessageResponseModel
             {
                 IsSuccess = true,

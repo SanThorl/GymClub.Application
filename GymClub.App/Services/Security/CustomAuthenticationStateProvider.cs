@@ -57,10 +57,11 @@ namespace GymClub.App.Services.Security
         private static ClaimsPrincipal CreateClaimsPrincipal(UserSessionModel userSession)
         {
             var claims = new List<Claim>
-        {
-            new Claim("UserId", userSession.UserId),
-            new Claim("SessionId", userSession.SessionId)
-        };
+            {
+                new Claim("UserName", userSession.UserName),
+                new Claim("UserId", userSession.UserId),
+                new Claim("SessionId", userSession.SessionId)
+            };
 
             return new ClaimsPrincipal(new ClaimsIdentity(claims, AuthType));
         }

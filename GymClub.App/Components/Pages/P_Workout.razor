@@ -4,11 +4,65 @@
 @layout MainLayout
 @inject WorkoutService _workout
 @rendermode RenderMode.InteractiveServer
+@using GymClub.Shared.Enum
 @using Radzen
 @using Radzen.Blazor
 
-<RadzenText TextAlign="TextAlign.Center" TagName="TagName.H5">Select Your Workout Plan</RadzenText>
 
+@if (_formType == EnumFormType.WorkoutList)
+{
+	<RadzenText TextAlign="TextAlign.Center" TagName="TagName.H3">Select Your Workout Plan</RadzenText>
+	<RadzenDataList TItem="WorkoutModel" Data="@lst" PageSize="6" WrapItems="true" AllowPaging="true">
+		<Template Context="data">
+			<RadzenCard Style="width: 250px; cursor: pointer;" Class="rz-border-radius-3" @onclick="() => WorkoutCollection(data.WId)">
+				<!-- Divider -->
+				<hr style="border: none; background-color: rgba(0,0,0,.08); height: 1px; margin: 1rem 0;" />
+
+				<!-- Image and Details -->
+				<RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="Radzen.AlignItems.Center" Gap="1rem">
+					<RadzenImage Path=@($"/images/gym{lst.IndexOf(data)}.jpg")
+								 Class="rz-border-radius-10"
+								 Style="width: 80px; height: 80px; object-fit: cover;"
+								 AlternateText="@data.WorkoutName" />
+
+					<RadzenStack Gap="0">
+						<RadzenText TextStyle="TextStyle.Subtitle1" Class="rz-mb-0">
+							<strong>@data.WorkoutName</strong>
+						</RadzenText>
+						<RadzenText TextStyle="TextStyle.Body2" Class="rz-mb-0">@data.Level</RadzenText>
+						<RadzenText TextStyle="TextStyle.Caption" Class="rz-mb-0">@data.Place</RadzenText>
+					</RadzenStack>
+				</RadzenStack>
+			</RadzenCard>
+		</Template>
+	</RadzenDataList>
+}
+
+else if (_formType == EnumFormType.ExerciseList)
+{
+	<div class="card overflow-hidden">
+		<div class="card-body pt-2">
+			<div>
+				<MudCard>
+					<!-- Card Content Section -->
+					<MudCardContent>
+						<MudText Typo="Typo.h4" Bold="true">@model.Data.WorkoutName</MudText>
+						<MudText Typo="Typo.body1">@model.Data.Level</MudText>
+					</MudCardContent>
+				</MudCard>
+			</div>
+			<RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="Radzen.AlignItems.Center" Gap="1rem" Wrap="FlexWrap.Wrap">
+				@foreach (var lst in lstExercise)
+				{
+					<RadzenButton Click="() => ShowExercises(lst.Day)" Text="Workout Day" Icon="check_circle" Shade="Shade.Dark" ButtonStyle="ButtonStyle.Base" />
+				}
+			</RadzenStack>
+			<RadzenButton Text="Back"
+						  Click="@Back"
+						  Style="margin-top: 10px; width: 100%;" />
+		</div>
+	</div>
+}
 @* <div class="row">
 	@if (lst is not null)
 	{
@@ -37,50 +91,3 @@
 		}
 	}
 </div> *@
-
-@if (lst is not null){
-<RadzenDataList TItem="WorkoutModel" Data="@lst" PageSize="6" WrapItems="true" AllowPaging="true" >
-	<Template Context="data">
-			<RadzenCard Style="width: 250px; cursor: pointer;" Class="rz-border-radius-3" @onclick="() => WorkoutCollection(data)">
-			<!-- Divider -->
-			<hr style="border: none; background-color: rgba(0,0,0,.08); height: 1px; margin: 1rem 0;" />
-
-			<!-- Image and Details -->
-			<RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="Radzen.AlignItems.Center" Gap="1rem">
-				<RadzenImage Path=@($"/images/gym{lst.IndexOf(data)}.jpg")
-							 Class="rz-border-radius-10"
-							 Style="width: 80px; height: 80px; object-fit: cover;"
-							 AlternateText="@data.WorkoutName" />
-
-				<RadzenStack Gap="0">
-					<RadzenText TextStyle="TextStyle.Subtitle1" Class="rz-mb-0">
-						<strong>@data.WorkoutName</strong>
-					</RadzenText>
-					<RadzenText TextStyle="TextStyle.Body2" Class="rz-mb-0">@data.Level</RadzenText>
-					<RadzenText TextStyle="TextStyle.Caption" Class="rz-mb-0">@data.Place</RadzenText>
-				</RadzenStack>
-			</RadzenStack>
-		</RadzenCard>
-	</Template>
-</RadzenDataList>
-}
-
-@code {
-	private WorkoutResponseModel model;
-	private List<WorkoutModel> lst;
-	protected override async Task OnInitializedAsync()
-	{
-		await List();
-	}
-
-	private async Task List()
-	{
-		model = await _workout.GetWorkoutList();
-		lst = model.lstData;
-	}
-
-	private async Task WorkoutCollection(WorkoutModel workout)
-	{
-		Console.WriteLine("Something!");
-	}
-}

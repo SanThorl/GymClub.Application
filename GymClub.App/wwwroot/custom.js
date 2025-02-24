@@ -1,7 +1,7 @@
-﻿//var interval;
-//$(document).ready(function () {
-//    enableLoading(false);
-//})
+﻿var interval;
+$(document).ready(function () {
+    enableLoading(false);
+})
 
 Notiflix.Loading.init({
     svgColor: '#5ACCE5',
