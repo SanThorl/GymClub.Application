@@ -19,6 +19,8 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<TblLogin> TblLogins { get; set; }
 
+    public virtual DbSet<TblPayment> TblPayments { get; set; }
+
     public virtual DbSet<TblUser> TblUsers { get; set; }
 
     public virtual DbSet<TblWorkout> TblWorkouts { get; set; }
@@ -54,6 +56,20 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.UserName)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<TblPayment>(entity =>
+        {
+            entity.HasKey(e => e.Pid);
+
+            entity.ToTable("Tbl_Payment");
+
+            entity.Property(e => e.Pid).HasColumnName("PId");
+            entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
+            entity.Property(e => e.Wid).HasColumnName("WId");
+            entity.Property(e => e.WorkoutName)
                 .HasMaxLength(50)
                 .IsUnicode(false);
         });
@@ -94,6 +110,7 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Place)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
             entity.Property(e => e.Wid)
                 .ValueGeneratedOnAdd()
                 .HasColumnName("WId");
