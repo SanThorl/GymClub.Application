@@ -23,13 +23,6 @@ namespace GymClub.App.Components.Pages
             lst = model.lstData;
         }
 
-        private bool CheckSelected(int wid)
-        {
-            bool isSelected = wid == 0;
-            _selectedWorkout = new List<WorkoutModel>();
-            return isSelected;
-        }
-
         async Task WorkoutCollection(int workoutId)
         {
             await _injectService.EnableLoading();
