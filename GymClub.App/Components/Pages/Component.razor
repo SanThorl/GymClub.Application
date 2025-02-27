@@ -1,0 +1,72 @@
+﻿@page "/exercises"
+@using GymClub.Domain.Features.Workouts
+@inject WorkoutService ExerciseService
+
+<RadzenCard>
+    <h3>Exercise Timer</h3>
+    <RadzenDataList TItem="ExerciseModel" Data="@exercises">
+        <Template Context="exercise">
+            <div>
+                <h4>@exercise.EName</h4>
+                <p>Time Left: @FormatTime(exercise.RemainingSeconds)</p>
+                @* <RadzenProgressBar Value="@((exercise.RemainingSeconds * 100) / exercise.TotalSeconds)" /> *@
+                <RadzenProgressBar Value="@(100 - ((exercise.RemainingSeconds * 100) / exercise.TotalSeconds))" />
+                
+                <RadzenButton Text="Start" Click="() => StartTimer(exercise)" Disabled="@exercise.IsRunning" />
+                <RadzenButton Text="Pause" Click="() => PauseTimer(exercise)" Disabled="@(exercise.RemainingSeconds == 0 || !exercise.IsRunning)" />
+                <RadzenButton Text="Reset" Click="() => ResetTimer(exercise)" Disabled="@(exercise.RemainingSeconds == exercise.TotalSeconds)" />
+            </div>
+        </Template>
+    </RadzenDataList>
+</RadzenCard>
+
+@code {
+    private List<ExerciseModel> exercises = new();
+ 
+    protected override async Task OnInitializedAsync()
+    {
+        exercises = await ExerciseService.GetExercisesAsync(1);
+
+        // Initialize RemainingSeconds from TimeOnly
+        foreach (var exercise in exercises)
+        {
+            exercise.RemainingSeconds = exercise.TotalSeconds;
+            exercise.RemainingTime = exercise.Time;
+        }
+    }
+
+    private async void StartTimer(ExerciseModel exercise)
+    {
+        exercise.IsRunning = true;
+
+        while (exercise.RemainingSeconds > 0 && exercise.IsRunning)
+        {
+            await Task.Delay(1000);
+            exercise.RemainingSeconds--;
+
+            // Update RemainingTime (Convert from seconds)
+            exercise.RemainingTime = TimeOnly.FromTimeSpan(TimeSpan.FromSeconds(exercise.RemainingSeconds));
+
+            StateHasChanged();
+        }
+
+        exercise.IsRunning = false;
+    }
+
+    private void PauseTimer(ExerciseModel exercise)
+    {
+        exercise.IsRunning = false;
+    }
+
+    private void ResetTimer(ExerciseModel exercise)
+    {
+        exercise.RemainingSeconds = exercise.TotalSeconds;
+        exercise.RemainingTime = exercise.Time;
+        StateHasChanged();
+    }
+
+    private string FormatTime(int seconds)
+    {
+        return TimeOnly.FromTimeSpan(TimeSpan.FromSeconds(seconds)).ToString("mm':'ss");
+    }
+}

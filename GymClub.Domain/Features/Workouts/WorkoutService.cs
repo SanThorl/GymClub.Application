@@ -1,4 +1,5 @@
 ﻿using GymClub.Database.DbModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -115,5 +116,21 @@ public class WorkoutService
 
     result:
         return model;
+    }
+
+    public async Task<List<ExerciseModel>> GetExercisesAsync(int day)
+    {
+       var elist = await _db.TblExercises.AsNoTracking()
+            .Where(x => x.Day == day)
+            .Select(x => new ExerciseModel
+            {
+                EName = x.EName,
+                Wid = x.Wid,
+                Day = x.Day,
+                Time = x.Time,
+                Calories = x.Calories,
+                DelFlag = x.DelFlag
+            }).ToListAsync();
+        return elist;
     }
 }

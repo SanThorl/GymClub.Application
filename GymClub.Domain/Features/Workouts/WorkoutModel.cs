@@ -33,6 +33,12 @@ public class ExerciseModel
     public int Calories { get; set; }
 
     public byte? DelFlag { get; set; }
+    public TimeOnly RemainingTime { get; set; } // Timer Countdown
+
+    // Convert TimeOnly to total seconds for easier countdown
+    public int TotalSeconds => Time.Hour * 3600 + Time.Minute * 60 + Time.Second;
+    public int RemainingSeconds { get; set; } // Used for countdown
+    public bool IsRunning { get; set; } = false;
 }
 public class WorkoutResponseModel
 {

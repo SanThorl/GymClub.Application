@@ -18,7 +18,7 @@ public class RegistrationRequestModel
     public string PhoneNo { get; set; }
     public string Password { get; set; }
     public string Gender { get; set; }
-    public string DateOfBirth { get; set; }
+    public DateTime DateOfBirth { get; set; }
 }
 
 public class RegistrationResponseModel
