@@ -7,8 +7,11 @@ using GymClub.Domain.Models;
 
 namespace GymClub.Domain.Features.User.Registration;
 
-public class RegistrationModel
+public class UserModel
 {
+    public RegistrationResponseModel resModel { get; set; }
+    public MessageResponseModel Response { get; set; }
+
 }
 
 public class RegistrationRequestModel
