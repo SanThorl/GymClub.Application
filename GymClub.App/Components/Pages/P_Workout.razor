@@ -21,9 +21,9 @@
 				<!-- Image and Details -->
 				<RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="Radzen.AlignItems.Center" Gap="1rem">
 					<RadzenImage Path=@($"/images/gym{lst.IndexOf(data)}.jpg")
-								 Class="rz-border-radius-10"
-								 Style="width: 80px; height: 80px; object-fit: cover;"
-								 AlternateText="@data.WorkoutName" />
+					Class="rz-border-radius-10"
+					Style="width: 80px; height: 80px; object-fit: cover;"
+					AlternateText="@data.WorkoutName" />
 
 					<RadzenStack Gap="0">
 						<RadzenText TextStyle="TextStyle.Subtitle1" Class="rz-mb-0">
@@ -43,20 +43,29 @@ else if (_formType == EnumFormType.ExerciseList)
 	<div class="card overflow-hidden">
 		<div class="card-body pt-2">
 			<div>
-				<MudCard>
-					<!-- Card Content Section -->
-					<MudCardContent>
-						<MudText Typo="Typo.h4" Bold="true">@model.Data.WorkoutName</MudText>
-						<MudText Typo="Typo.body1">@model.Data.Level</MudText>
-					</MudCardContent>
-				</MudCard>
+				<MudContainer Class="d-flex justify-center align-center" Style="height: 20vh;">
+
+					<MudCard Class="p-4">
+						<!-- Card Content Section -->
+						<MudCardContent>
+							<MudText Typo="Typo.h4" Bold="true">@model.Data.WorkoutName</MudText>
+							<MudText Typo="Typo.body1">@model.Data.Level</MudText>
+						</MudCardContent>
+					</MudCard>
+				</MudContainer>
 			</div>
-			<RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="Radzen.AlignItems.Center" Gap="1rem" Wrap="FlexWrap.Wrap">
-				@foreach (var lst in lstExercise)
-				{
-					<RadzenButton Click="() => ShowExercises(lst.Day)" Text="Workout Day" Icon="check_circle" Shade="Shade.Dark" ButtonStyle="ButtonStyle.Base" />
-				}
-			</RadzenStack>
+			@if (lstExercise.Count > 0)
+			{
+				int count = 0;
+
+				<RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="Radzen.AlignItems.Center" Gap="1rem" Wrap="FlexWrap.Wrap">
+					@foreach (var lst in lstExercise)
+					{
+						<RadzenButton Click="() => ShowExercises(lst.Day)" Text="@($"Workout Day {++count}")" Icon="check_circle" Shade="Shade.Dark" ButtonStyle="ButtonStyle.Base" />
+					}
+				</RadzenStack>
+			}
+			
 			<RadzenButton Text="Back"
 						  Click="@Back"
 						  Style="margin-top: 10px; width: 100%;" />

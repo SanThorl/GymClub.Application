@@ -10,8 +10,10 @@ namespace GymClub.App.Components.Pages
         private WorkoutResponseModel model;
         private List<WorkoutModel> lst;
         private List<ExerciseModel> lstExercise;
+        private List<ExerciseModel> eListForEachDay = new();
         private EnumFormType _formType = EnumFormType.WorkoutList;
         private IList<WorkoutModel> _selectedWorkout = new List<WorkoutModel>();
+
         protected override async Task OnInitializedAsync()
         {
             await List();
@@ -35,7 +37,13 @@ namespace GymClub.App.Components.Pages
         private async Task ShowExercises(int day)
         {
             await _injectService.EnableLoading();
-            var eListForDay = lstExercise.Where(x => x.Day == day).ToList();
+            eListForEachDay = lstExercise.Where(x => x.Day == day).ToList();
+
+            foreach (var exercise in eListForEachDay)
+            {
+                exercise.RemainingSeconds = exercise.TotalSeconds;
+                exercise.RemainingTime = exercise.Time;
+            }
             await _injectService.DisableLoading();
         }
 
