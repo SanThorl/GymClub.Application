@@ -31,7 +31,7 @@ namespace GymClub.App.Components.Pages
              model = await _workout.GetWorkoutById(workoutId);
             lstExercise = model.EList;
             await _injectService.DisableLoading();
-            _formType = EnumFormType.ExerciseList;
+            _formType = EnumFormType.DayList;
         }
 
         private async Task ShowExercises(int day)
@@ -39,6 +39,7 @@ namespace GymClub.App.Components.Pages
             await _injectService.EnableLoading();
             eListForEachDay = lstExercise.Where(x => x.Day == day).ToList();
 
+            _formType = EnumFormType.ExerciseList;
             foreach (var exercise in eListForEachDay)
             {
                 exercise.RemainingSeconds = exercise.TotalSeconds;
@@ -47,6 +48,40 @@ namespace GymClub.App.Components.Pages
             await _injectService.DisableLoading();
         }
 
+        private async Task StartTimer(ExerciseModel exercise)
+        {
+            exercise.IsRunning = true;
+
+            while (exercise.RemainingSeconds > 0 && exercise.IsRunning)
+            {
+                await Task.Delay(1000);
+                exercise.RemainingSeconds--;
+
+                // Update RemainingTime (Convert from seconds)
+                exercise.RemainingTime = TimeOnly.FromTimeSpan(TimeSpan.FromSeconds(exercise.RemainingSeconds));
+
+                StateHasChanged();
+            }
+
+            exercise.IsRunning = false;
+        }
+
+        private async Task PauseTimer(ExerciseModel exercise)
+        {
+            exercise.IsRunning = false;
+        }
+
+        private async Task ResetTimer(ExerciseModel exercise)
+        {
+            exercise.RemainingSeconds = exercise.TotalSeconds;
+            exercise.RemainingTime = exercise.Time;
+            StateHasChanged();
+        }
+
+        private string FormatTime(int seconds)
+        {
+            return TimeOnly.FromTimeSpan(TimeSpan.FromSeconds(seconds)).ToString("mm':'ss");
+        }
         async Task Back()
         {
             await List();

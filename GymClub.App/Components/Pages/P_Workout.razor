@@ -38,7 +38,7 @@
 	</RadzenDataList>
 }
 
-else if (_formType == EnumFormType.ExerciseList)
+else if (_formType == EnumFormType.DayList)
 {
 	<div class="card overflow-hidden">
 		<div class="card-body pt-2">
@@ -71,6 +71,25 @@ else if (_formType == EnumFormType.ExerciseList)
 						  Style="margin-top: 10px; width: 100%;" />
 		</div>
 	</div>
+}
+else{
+	<RadzenCard>
+		<h3>Exercise Timer</h3>
+		<RadzenDataList TItem="ExerciseModel" Data="@eListForEachDay">
+			<Template Context="eListForEachDay">
+				<div>
+					<h4>@eListForEachDay.EName</h4>
+					<p>Time Left: @FormatTime(exercise.RemainingSeconds)</p>
+					@* <RadzenProgressBar Value="@((exercise.RemainingSeconds * 100) / exercise.TotalSeconds)" /> *@
+					<RadzenProgressBar Value="@(100 - ((exercise.RemainingSeconds * 100) / exercise.TotalSeconds))" />
+
+					<RadzenButton Text="Start" Click="() => StartTimer(exercise)" Disabled="@exercise.IsRunning" />
+					<RadzenButton Text="Pause" Click="() => PauseTimer(exercise)" Disabled="@(exercise.RemainingSeconds == 0 || !exercise.IsRunning)" />
+					<RadzenButton Text="Reset" Click="() => ResetTimer(exercise)" Disabled="@(exercise.RemainingSeconds == exercise.TotalSeconds)" />
+				</div>
+			</Template>
+		</RadzenDataList>
+	</RadzenCard>
 }
 @* <div class="row">
 	@if (lst is not null)
