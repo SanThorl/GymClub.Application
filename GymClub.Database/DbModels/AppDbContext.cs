@@ -38,6 +38,7 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(80)
                 .IsUnicode(false)
                 .HasColumnName("E_Name");
+            entity.Property(e => e.Url).IsUnicode(false);
             entity.Property(e => e.Wid).HasColumnName("WId");
         });
 

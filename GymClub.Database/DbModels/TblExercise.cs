@@ -18,4 +18,6 @@ public partial class TblExercise
     public int Calories { get; set; }
 
     public byte? DelFlag { get; set; }
+
+    public string? Url { get; set; }
 }

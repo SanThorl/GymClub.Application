@@ -1,4 +1,4 @@
-﻿@page "/profile"
+﻿@* @page "/profile"
 @inject AuthenticationStateProvider _authStateProvider
 
 <div class="card rounded-4">
@@ -55,7 +55,7 @@
     private string _merchantName;
     private string? _imagePath;
     private RegistrationRequestModel reqModel = new();
-    private MerchantModel _model = new();
+    private RegistrationResponseModel _model = new();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -187,4 +187,4 @@
             await _injectService.DisableLoading();
         }
     }
-}
+} *@
