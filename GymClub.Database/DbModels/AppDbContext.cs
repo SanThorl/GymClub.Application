@@ -111,9 +111,7 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
-            entity.Property(e => e.Wid)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("WId");
+            entity.Property(e => e.WorkoutId).ValueGeneratedOnAdd();
             entity.Property(e => e.WorkoutName)
                 .HasMaxLength(100)
                 .IsUnicode(false);

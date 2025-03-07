@@ -5,7 +5,7 @@ namespace GymClub.Database.DbModels;
 
 public partial class TblWorkout
 {
-    public int Wid { get; set; }
+    public int WorkoutId { get; set; }
 
     public string WorkoutName { get; set; } = null!;
 

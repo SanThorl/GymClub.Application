@@ -39,7 +39,7 @@ public class WorkoutService
                 WorkoutName = x.WorkoutName,
                 Place = x.Place,
                 Level = x.Level,
-                WorkoutId = x.Wid
+                WorkoutId = x.WorkoutId
             }).ToList();
 
             model.Response = new MessageResponseModel
@@ -66,7 +66,7 @@ public class WorkoutService
         WorkoutResponseModel model = new WorkoutResponseModel();
         try 
         {
-            var data = await _db.TblWorkouts.FirstOrDefaultAsync(x => x.Wid == id);
+            var data = await _db.TblWorkouts.FirstOrDefaultAsync(x => x.WorkoutId == id);
             if (data is null)
             {
                 model.Response = new MessageResponseModel
@@ -81,7 +81,7 @@ public class WorkoutService
                 WorkoutName = data.WorkoutName,
                 Place = data.Place,
                 Level = data.Level,
-                WorkoutId = data.Wid
+                WorkoutId = data.WorkoutId
             };
 
             var days = await _db.TblExercises
