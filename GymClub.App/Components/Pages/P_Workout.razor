@@ -79,17 +79,20 @@ else{
 			<Template Context="eListForEachDay">
 				<div>
 					<h4>@eListForEachDay.EName</h4>
-					<p>Time Left: @FormatTime(exercise.RemainingSeconds)</p>
-					@* <RadzenProgressBar Value="@((exercise.RemainingSeconds * 100) / exercise.TotalSeconds)" /> *@
-					<RadzenProgressBar Value="@(100 - ((exercise.RemainingSeconds * 100) / exercise.TotalSeconds))" />
+					<p>Time Left: @FormatTime(eListForEachDay.RemainingSeconds)</p>
+					<RadzenProgressBar Value="@(100 - ((eListForEachDay.RemainingSeconds * 100) / eListForEachDay.TotalSeconds))" />
 
-					<RadzenButton Text="Start" Click="() => StartTimer(exercise)" Disabled="@exercise.IsRunning" />
-					<RadzenButton Text="Pause" Click="() => PauseTimer(exercise)" Disabled="@(exercise.RemainingSeconds == 0 || !exercise.IsRunning)" />
-					<RadzenButton Text="Reset" Click="() => ResetTimer(exercise)" Disabled="@(exercise.RemainingSeconds == exercise.TotalSeconds)" />
+					<RadzenButton Text="Start" Click="() => StartTimer(eListForEachDay)" Disabled="@eListForEachDay.IsRunning" />
+					<RadzenButton Text="Pause" Click="() => PauseTimer(eListForEachDay)" Disabled="@(eListForEachDay.RemainingSeconds == 0 || !eListForEachDay.IsRunning)" />
+					<RadzenButton Text="Reset" Click="() => ResetTimer(eListForEachDay)" Disabled="@(eListForEachDay.RemainingSeconds == eListForEachDay.TotalSeconds)" />
 				</div>
 			</Template>
 		</RadzenDataList>
+		<RadzenButton Text="FINISH WORKOUT"
+					  Click="() => Finish(_selectedDay)"
+					  Style="margin-top: 10px; width: 100%;" />
 	</RadzenCard>
+	
 }
 @* <div class="row">
 	@if (lst is not null)

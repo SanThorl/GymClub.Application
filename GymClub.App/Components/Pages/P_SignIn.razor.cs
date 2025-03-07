@@ -40,8 +40,9 @@ namespace GymClub.App.Components.Pages
 
             if (model.Response.IsError)
             {
+                //_nav.NavigateTo("/signIn");
                 await _injectService.ShowErrorMessage(model.Response.Message);
-                _nav.NavigateTo("/signIn");
+                return;
             }
             var userSessionModel = new UserSessionModel
             {
