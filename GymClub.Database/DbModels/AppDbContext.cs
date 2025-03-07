@@ -29,17 +29,14 @@ public partial class AppDbContext : DbContext
     {
         modelBuilder.Entity<TblExercise>(entity =>
         {
-            entity.HasKey(e => e.Eid);
+            entity.HasKey(e => e.ExerciseId);
 
             entity.ToTable("Tbl_Exercise");
 
-            entity.Property(e => e.Eid).HasColumnName("EId");
-            entity.Property(e => e.EName)
+            entity.Property(e => e.ExerciseName)
                 .HasMaxLength(80)
-                .IsUnicode(false)
-                .HasColumnName("E_Name");
+                .IsUnicode(false);
             entity.Property(e => e.Url).IsUnicode(false);
-            entity.Property(e => e.Wid).HasColumnName("WId");
         });
 
         modelBuilder.Entity<TblLogin>(entity =>
@@ -63,13 +60,15 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<TblPayment>(entity =>
         {
-            entity.HasKey(e => e.Pid);
+            entity.HasKey(e => e.PaymentId);
 
             entity.ToTable("Tbl_Payment");
 
-            entity.Property(e => e.Pid).HasColumnName("PId");
-            entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
-            entity.Property(e => e.Wid).HasColumnName("WId");
+            entity.Property(e => e.Amount).HasColumnType("decimal(18, 0)");
+            entity.Property(e => e.PayDate).HasColumnType("datetime");
+            entity.Property(e => e.UserId)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.WorkoutName)
                 .HasMaxLength(50)
                 .IsUnicode(false);

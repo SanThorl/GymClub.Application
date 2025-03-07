@@ -14,7 +14,7 @@
 	<RadzenText TextAlign="TextAlign.Center" TagName="TagName.H3">Select Your Workout Plan</RadzenText>
 	<RadzenDataList TItem="WorkoutModel" Data="@lst" PageSize="6" WrapItems="true" AllowPaging="true">
 		<Template Context="data">
-			<RadzenCard Style="width: 250px; cursor: pointer;" Class="rz-border-radius-3" @onclick="() => WorkoutCollection(data.WId)">
+			<RadzenCard Style="width: 250px; cursor: pointer;" Class="rz-border-radius-3" @onclick="() => WorkoutCollection(data.WorkoutId)">
 				<!-- Divider -->
 				<hr style="border: none; background-color: rgba(0,0,0,.08); height: 1px; margin: 1rem 0;" />
 
@@ -78,7 +78,7 @@ else{
 		<RadzenDataList TItem="ExerciseModel" Data="@eListForEachDay">
 			<Template Context="eListForEachDay">
 				<div>
-					<h4>@eListForEachDay.EName</h4>
+					<h4>@eListForEachDay.ExerciseName</h4>
 					<p>Time Left: @FormatTime(eListForEachDay.RemainingSeconds)</p>
 					<RadzenProgressBar Value="@(100 - ((eListForEachDay.RemainingSeconds * 100) / eListForEachDay.TotalSeconds))" />
 

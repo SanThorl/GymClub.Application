@@ -39,7 +39,7 @@ public class WorkoutService
                 WorkoutName = x.WorkoutName,
                 Place = x.Place,
                 Level = x.Level,
-                WId = x.Wid
+                WorkoutId = x.Wid
             }).ToList();
 
             model.Response = new MessageResponseModel
@@ -81,16 +81,16 @@ public class WorkoutService
                 WorkoutName = data.WorkoutName,
                 Place = data.Place,
                 Level = data.Level,
-                WId = data.Wid
+                WorkoutId = data.Wid
             };
 
             var days = await _db.TblExercises
                 .AsNoTracking()
-                .Where(x => x.Wid == id)
+                .Where(x => x.WorkoutId == id)
                 .Select(x => new ExerciseModel
                 {
-                    EName = x.EName,
-                    Wid = x.Wid,
+                    ExerciseName = x.ExerciseName,
+                    WorkoutId = x.WorkoutId,
                     Day = x.Day,
                     Time = x.Time,
                     Calories = x.Calories,
@@ -98,7 +98,7 @@ public class WorkoutService
                 })
                 .Distinct().ToListAsync();
 
-            model.EList = days;
+            model.ExerciseList = days;
             model.Response = new MessageResponseModel
             {
                 IsSuccess = true,
@@ -124,8 +124,8 @@ public class WorkoutService
             .Where(x => x.Day == day)
             .Select(x => new ExerciseModel
             {
-                EName = x.EName,
-                Wid = x.Wid,
+                ExerciseName = x.ExerciseName,
+                WorkoutId = x.WorkoutId,
                 Day = x.Day,
                 Time = x.Time,
                 Calories = x.Calories,

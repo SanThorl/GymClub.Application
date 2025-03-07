@@ -5,11 +5,11 @@ namespace GymClub.Database.DbModels;
 
 public partial class TblExercise
 {
-    public int Eid { get; set; }
+    public int ExerciseId { get; set; }
 
-    public string EName { get; set; } = null!;
+    public string ExerciseName { get; set; } = null!;
 
-    public int Wid { get; set; }
+    public int WorkoutId { get; set; }
 
     public int Day { get; set; }
 

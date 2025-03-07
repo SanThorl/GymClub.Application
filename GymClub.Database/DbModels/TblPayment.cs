@@ -5,13 +5,17 @@ namespace GymClub.Database.DbModels;
 
 public partial class TblPayment
 {
-    public int Pid { get; set; }
+    public int PaymentId { get; set; }
 
-    public int? Wid { get; set; }
+    public int? WorkoutId { get; set; }
 
     public string? WorkoutName { get; set; }
 
-    public decimal? Price { get; set; }
+    public decimal? Amount { get; set; }
 
     public byte? IsPaid { get; set; }
+
+    public string? UserId { get; set; }
+
+    public DateTime? PayDate { get; set; }
 }

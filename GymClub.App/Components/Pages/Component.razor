@@ -7,7 +7,7 @@
     <RadzenDataList TItem="ExerciseModel" Data="@exercises">
         <Template Context="exercise">
             <div>
-                <h4>@exercise.EName</h4>
+                <h4>@exercise.ExerciseName</h4>
                 <p>Time Left: @FormatTime(exercise.RemainingSeconds)</p>
                 @* <RadzenProgressBar Value="@((exercise.RemainingSeconds * 100) / exercise.TotalSeconds)" /> *@
                 <RadzenProgressBar Value="@(100 - ((exercise.RemainingSeconds * 100) / exercise.TotalSeconds))" />

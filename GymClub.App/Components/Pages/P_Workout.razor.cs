@@ -29,7 +29,7 @@ namespace GymClub.App.Components.Pages
         {
             await _injectService.EnableLoading();
              model = await _workout.GetWorkoutById(workoutId);
-            lstExercise = model.EList;
+            lstExercise = model.ExerciseList;
             await _injectService.DisableLoading();
             _formType = EnumFormType.DayList;
         }
