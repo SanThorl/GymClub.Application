@@ -1,4 +1,5 @@
 ﻿using GymClub.Database.DbModels;
+using GymClub.Shared;
 
 namespace GymClub.Domain.Features.User.Registration
 {
@@ -15,7 +16,9 @@ namespace GymClub.Domain.Features.User.Registration
             RegistrationResponseModel model = new RegistrationResponseModel();
             try
             {
-                TblUser? user = await _db.TblUsers.AsNoTracking().FirstOrDefaultAsync(x => x.PhoneNo == reqModel.PhoneNo);
+                TblUser? user = await _db.TblUsers.AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.UserName.ToLower().Trim() == reqModel.UserName.ToLower().Trim() 
+                    && x.PhoneNo == reqModel.PhoneNo);
                 if (user is not null)
                 {
                     model.Response = new MessageResponseModel()
@@ -26,6 +29,7 @@ namespace GymClub.Domain.Features.User.Registration
                     goto result;
                 }
 
+                string hashedPassword = reqModel.Password.SHA256HexHashString(reqModel.UserName);
                 var ulid = Ulid.NewUlid().ToString();
 
                 TblUser newUser = new TblUser()
@@ -33,7 +37,7 @@ namespace GymClub.Domain.Features.User.Registration
                     UserId = ulid,
                     UserName = reqModel.UserName,
                     PhoneNo = reqModel.PhoneNo,
-                    Password = reqModel.Password,
+                    Password = hashedPassword,
                     Gender = reqModel.Gender,
                     JoinDate = DateTime.Today
                 };

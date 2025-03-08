@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GymClub.Database.DbModels;
+using GymClub.Shared;
 
 namespace GymClub.Domain.Features.User.Login;
 
@@ -21,8 +22,9 @@ public class LoginService
         LoginResponseModel model = new LoginResponseModel();
         try
         {
+            string hashPassword = reqModel.Password.SHA256HexHashString(reqModel.UserName);
             TblUser? item = await _db.TblUsers.AsNoTracking().FirstOrDefaultAsync(x => x.UserName == reqModel.UserName
-                    && x.Password == reqModel.Password);
+                    && x.Password == hashPassword);
 
             if (item is null)
             {
