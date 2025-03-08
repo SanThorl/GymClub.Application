@@ -100,9 +100,10 @@ namespace GymClub.App.Components.Pages
 
         private async Task Finish(int day)
         {
-            _formType = EnumFormType.ExerciseList;
-            
-            await ShowExercises(day);
+            //_formType = EnumFormType.ExerciseList;
+            model = await _workout.UpdateDay(day);
+            //await ShowExercises(day);
+            _nav.NavigateTo("/dashboard");
         }
     }
 }

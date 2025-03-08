@@ -20,4 +20,6 @@ public partial class TblExercise
     public byte? DelFlag { get; set; }
 
     public string? Url { get; set; }
+
+    public byte? IsDone { get; set; }
 }

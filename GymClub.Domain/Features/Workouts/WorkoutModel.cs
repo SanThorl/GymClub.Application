@@ -33,6 +33,7 @@ public class ExerciseModel : BaseRequestModel
     public int Calories { get; set; }
 
     public byte? DelFlag { get; set; }
+    public byte? IsDone { get; set; }
     public TimeOnly RemainingTime { get; set; } // Timer Countdown
 
     // Convert TimeOnly to total seconds for easier countdown
