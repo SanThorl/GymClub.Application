@@ -2,11 +2,13 @@
 using GymClub.Domain.Models;
 using GymClub.Shared.Enum;
 using Microsoft.AspNetCore.Components.Web;
+using System.Diagnostics.Metrics;
 
 namespace GymClub.App.Components.Pages
 {
     public partial class P_Workout
     {
+        ILogger<P_Workout> _logger;
         private WorkoutResponseModel model;
         private List<WorkoutModel> lst;
         private List<ExerciseModel> lstExercise;
@@ -27,11 +29,18 @@ namespace GymClub.App.Components.Pages
 
         async Task WorkoutCollection(int workoutId)
         {
-            await _injectService.EnableLoading();
-             model = await _workout.GetWorkoutById(workoutId);
-            lstExercise = model.ExerciseList;
-            await _injectService.DisableLoading();
-            _formType = EnumFormType.DayList;
+            try
+            {
+                await _injectService.EnableLoading();
+                model = await _workout.GetWorkoutById(workoutId);
+                lstExercise = model.ExerciseList;
+                await _injectService.DisableLoading();
+                _formType = EnumFormType.DayList;
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+            }
         }
 
         private async Task ShowExercises(int day)
@@ -92,6 +101,7 @@ namespace GymClub.App.Components.Pages
         private async Task Finish(int day)
         {
             _formType = EnumFormType.ExerciseList;
+            
             await ShowExercises(day);
         }
     }
