@@ -17,6 +17,8 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<TblExercise> TblExercises { get; set; }
 
+    public virtual DbSet<TblLogEvent> TblLogEvents { get; set; }
+
     public virtual DbSet<TblLogin> TblLogins { get; set; }
 
     public virtual DbSet<TblPayment> TblPayments { get; set; }
@@ -37,6 +39,13 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(80)
                 .IsUnicode(false);
             entity.Property(e => e.Url).IsUnicode(false);
+        });
+
+        modelBuilder.Entity<TblLogEvent>(entity =>
+        {
+            entity.ToTable("Tbl_LogEvents");
+
+            entity.Property(e => e.TimeStamp).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<TblLogin>(entity =>
@@ -90,7 +99,7 @@ public partial class AppDbContext : DbContext
                 .IsFixedLength();
             entity.Property(e => e.JoinDate).HasColumnType("datetime");
             entity.Property(e => e.Password)
-                .HasMaxLength(50)
+                .HasMaxLength(180)
                 .IsUnicode(false);
             entity.Property(e => e.PhoneNo)
                 .HasMaxLength(11)
