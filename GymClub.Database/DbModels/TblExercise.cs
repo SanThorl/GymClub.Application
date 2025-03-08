@@ -17,9 +17,9 @@ public partial class TblExercise
 
     public int Calories { get; set; }
 
-    public byte? DelFlag { get; set; }
+    public bool? DelFlag { get; set; }
 
     public string? Url { get; set; }
 
-    public byte? IsDone { get; set; }
+    public bool? IsDone { get; set; }
 }
