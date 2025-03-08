@@ -19,6 +19,9 @@ namespace GymClub.App.Components.Pages
             if (firstRender)
             {
                 await _injectService.EnableLoading();
+                var customAuthStateProvider = (CustomAuthenticationStateProvider)_authStateProvider;
+                await customAuthStateProvider.UpdateAuthenticationState(null);
+
                 StateHasChanged();
                 await _injectService.DisableLoading();
             }
@@ -40,7 +43,6 @@ namespace GymClub.App.Components.Pages
 
             if (model.Response.IsError)
             {
-                //_nav.NavigateTo("/signIn");
                 await _injectService.ShowErrorMessage(model.Response.Message);
                 return;
             }
@@ -48,10 +50,9 @@ namespace GymClub.App.Components.Pages
             {
                 UserName = model.UserName,
                 UserId = model.UserId,
-                SessionId = model.SessionId
             };
-            //var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
-            //await customAuthStateProvider.UpdateAuthenticationState(userSessionModel);
+            var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
+            await customAuthStateProvider.UpdateAuthenticationState(userSessionModel);
             _nav.NavigateTo("/workout");
         }
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GymClub.Domain.Features.Workouts;
 
-public class WorkoutModel
+public class WorkoutModel : BaseRequestModel
 {
     [Required]
     public string WorkoutName { get; set; }
@@ -18,7 +18,7 @@ public class WorkoutModel
     public int WorkoutId { get; set; }
 }
 
-public class ExerciseModel 
+public class ExerciseModel : BaseRequestModel
 {
     public int ExerciseId { get; set; }
 

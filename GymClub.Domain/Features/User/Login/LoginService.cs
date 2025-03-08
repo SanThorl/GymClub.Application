@@ -36,7 +36,7 @@ public class LoginService
                 goto result;
             }
 
-            string sessionId = Guid.NewGuid().ToString();
+            //string sessionId = Guid.NewGuid().ToString();
             //TblLogin login = new TblLogin
             //{
             //    SessionId = sessionId,
@@ -51,6 +51,7 @@ public class LoginService
             //model.UserId = login.UserId;
             //model.SessionId = login.SessionId;
             model.UserName = item.UserName;
+            model.UserId = item.UserId;
             model.Response = new MessageResponseModel
             {
                 IsSuccess = true,

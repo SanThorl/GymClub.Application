@@ -1,25 +1,23 @@
 ﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
 namespace GymClub.App.Services.Security
 {
     public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {
-        private readonly ProtectedLocalStorage _protectedLocalStorage;
+        private readonly ProtectedSessionStorage _protectedSessionStorage;
         private ClaimsPrincipal _anonymous = new ClaimsPrincipal(new ClaimsIdentity());
         private static readonly string Key = "UserSession";
         private static readonly string AuthType = "CustomAuthentication";
-        public CustomAuthenticationStateProvider(ProtectedLocalStorage protectedLocalStorage)
+        public CustomAuthenticationStateProvider(ProtectedSessionStorage protectedSessionStorage)
         {
-            _protectedLocalStorage = protectedLocalStorage;
+            _protectedSessionStorage = protectedSessionStorage;
         }
-
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             try
             {
-                var userSession = await _protectedLocalStorage.GetAsync<UserSessionModel>(Key);
+                var userSession = await _protectedSessionStorage.GetAsync<UserSessionModel>(Key);
 
                 if (userSession is { Success: true, Value: not null })
                 {
@@ -41,13 +39,13 @@ namespace GymClub.App.Services.Security
 
             if (userSession is not null)
             {
-                await _protectedLocalStorage.SetAsync(Key, userSession);
+                await _protectedSessionStorage.SetAsync(Key, userSession);
 
                 claimsPrincipal = CreateClaimsPrincipal(userSession);
             }
             else
             {
-                await _protectedLocalStorage.DeleteAsync(Key);
+                await _protectedSessionStorage.DeleteAsync(Key);
                 claimsPrincipal = _anonymous;
             }
 
@@ -60,7 +58,6 @@ namespace GymClub.App.Services.Security
             {
                 new Claim("UserName", userSession.UserName),
                 new Claim("UserId", userSession.UserId),
-                new Claim("SessionId", userSession.SessionId)
             };
 
             return new ClaimsPrincipal(new ClaimsIdentity(claims, AuthType));
@@ -70,7 +67,7 @@ namespace GymClub.App.Services.Security
             UserSessionModel model = new();
 
             var result =
-                await _protectedLocalStorage.GetAsync<UserSessionModel>(Key);
+                await _protectedSessionStorage.GetAsync<UserSessionModel>(Key);
             if (result.Success)
             {
                 model = result.Value;
@@ -85,5 +82,4 @@ public class UserSessionModel
 {
     public string? UserId { get; set; }
     public string? UserName { get; set; }
-    public string? SessionId { get; set; }
 }
