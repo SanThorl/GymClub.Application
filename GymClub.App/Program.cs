@@ -2,6 +2,7 @@ using GymClub.App.Components;
 using GymClub.App.Services;
 using GymClub.Database.DbModels;
 using GymClub.Domain.Features.Workouts;
+using GymClub.Shared;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using Radzen;
@@ -43,11 +44,12 @@ try
 
     builder.Services.AddDbContext<AppDbContext>(opt =>
     {
-        opt.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection"));
+        opt.UseSqlServer(connectionString);
     }, ServiceLifetime.Transient, ServiceLifetime.Transient);
 
     builder.Services.AddScoped<IInjectService, InjectService>();
     builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+    builder.Services.AddScoped<DapperService>(x => new DapperService(connectionString));
 
     builder.Services.AddMudServices();
     builder.Services.AddRazorPages();
