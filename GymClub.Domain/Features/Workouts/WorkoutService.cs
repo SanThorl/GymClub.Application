@@ -1,4 +1,5 @@
 ﻿using GymClub.Database.DbModels;
+using GymClub.Shared;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,11 @@ namespace GymClub.Domain.Features.Workouts;
 public class WorkoutService
 {
     private readonly AppDbContext _db;
-
-    public WorkoutService(AppDbContext db)
+    private readonly DapperService _dapperService;
+    public WorkoutService(AppDbContext db, DapperService dapperService)
     {
         _db = db;
+        _dapperService = dapperService;
     }
 
     public async Task<WorkoutResponseModel> GetWorkoutList()
@@ -23,8 +25,8 @@ public class WorkoutService
         WorkoutResponseModel model = new WorkoutResponseModel();
         try
         {
-            var lst = await _db.TblWorkouts.AsNoTracking().ToListAsync();
-
+            // var lst = await _db.TblWorkouts.AsNoTracking().ToListAsync();
+            var lst = _dapperService.Query<WorkoutModel>(SqlQueries.WorkoutList);
             if (lst is null)
             {
                 model.Response = new MessageResponseModel

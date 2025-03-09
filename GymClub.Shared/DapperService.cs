@@ -31,5 +31,11 @@ namespace GymClub.Shared
             T obj = db.QuerySingle<T>(query, param);
             return obj;
         }
+        public int Execute(string query, object? parameters = null)
+        {
+            using IDbConnection db = new SqlConnection(_connectionString);
+            int result = db.Execute(query, parameters);
+            return result;
+        }
     }
 }
