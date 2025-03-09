@@ -1,6 +1,7 @@
 ﻿using GymClub.Database.DbModels;
 using GymClub.Shared;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,12 @@ public class WorkoutService
 {
     private readonly AppDbContext _db;
     private readonly DapperService _dapperService;
-    public WorkoutService(AppDbContext db, DapperService dapperService)
+    private ILogger<WorkoutService> _logger;
+    public WorkoutService(AppDbContext db, DapperService dapperService, ILogger<WorkoutService> logger)
     {
         _db = db;
         _dapperService = dapperService;
+        _logger = logger;
     }
 
     public async Task<WorkoutResponseModel> GetWorkoutList()
@@ -25,8 +28,7 @@ public class WorkoutService
         WorkoutResponseModel model = new WorkoutResponseModel();
         try
         {
-            // var lst = await _db.TblWorkouts.AsNoTracking().ToListAsync();
-            var lst = _dapperService.Query<WorkoutModel>(SqlQueries.WorkoutList);
+            var lst = _dapperService.Query<WorkoutModel>(SqlQueries.WorkoutList).ToList();
             if (lst is null)
             {
                 model.Response = new MessageResponseModel
@@ -52,11 +54,7 @@ public class WorkoutService
         }
         catch (Exception ex)
         {
-            model.Response = new MessageResponseModel
-            {
-                IsSuccess = false,
-                Message = ex.Message
-            };
+            _logger.LogError(ex, ex.Message);
         }
 
     result:
@@ -109,11 +107,7 @@ public class WorkoutService
         }
         catch (Exception ex)
         {
-            model.Response = new MessageResponseModel
-            {
-                IsSuccess = false,
-                Message = ex.Message
-            };
+            _logger.LogError(ex, ex.Message);
         }
 
     result:
@@ -122,7 +116,7 @@ public class WorkoutService
 
     public async Task UpdateDay(int workoutId,int day)
     {
-
+        //var result = _dapperService.Execute(SqlQueries.FinishedExercises, new { workoutId, day });
         await _db.TblExercises
             .Where(x => x.Day == day && x.WorkoutId == workoutId)
             .ExecuteUpdateAsync(setters => setters.SetProperty(x => x.IsDone, true));

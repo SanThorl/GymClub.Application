@@ -10,5 +10,20 @@ namespace GymClub.Shared
     {
         public static string WorkoutList = @"SELECT *
                                             FROM Tbl_Workout with (nolock)";
+
+        public static string FinishedExercises = @"UPDATE TblExercises
+                                                    SET IsDone = 1
+                                                    WHERE WorkoutId = @workoutId AND Day = @day";
+
+        public static string RegisterNewUser = @"INSERT INTO [dbo].[Tbl_User]
+           ([UserId]
+           ,[UserName]
+           ,[PhoneNo]
+           ,[Password]
+           ,[Gender]
+           ,[DateOfBirth]
+           ,[JoinDate]
+           ,[DelFlag])
+     VALUES(@UserId,@UserName,@PhoneNo,@Password,@Gender,@DateOfBirth,@JoinDate,@DelFlag)";
     }
 }

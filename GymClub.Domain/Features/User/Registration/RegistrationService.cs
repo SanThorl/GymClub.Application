@@ -1,19 +1,25 @@
 ﻿using GymClub.Database.DbModels;
 using GymClub.Shared;
+using Microsoft.Extensions.Logging;
 
 namespace GymClub.Domain.Features.User.Registration
 {
     public class RegistrationService
     {
         private readonly AppDbContext _db;
-        public RegistrationService(AppDbContext db)
+        private readonly ILogger<RegistrationService> _logger;
+        private readonly DapperService _dapperService;
+
+        public RegistrationService(AppDbContext db, ILogger<RegistrationService> logger, DapperService dapperService)
         {
             _db = db;
+            _logger = logger;
+            _dapperService = dapperService;
         }
 
-        public async Task<RegistrationResponseModel> RegisterUser(RegistrationRequestModel reqModel)
+        public async Task<Result<RegistrationResponseModel>> RegisterUser(RegistrationRequestModel reqModel)
         {
-            RegistrationResponseModel model = new RegistrationResponseModel();
+            Result<RegistrationResponseModel> model = new Result<RegistrationResponseModel>();
             try
             {
                 TblUser? user = await _db.TblUsers.AsNoTracking()
@@ -21,12 +27,13 @@ namespace GymClub.Domain.Features.User.Registration
                     && x.PhoneNo == reqModel.PhoneNo);
                 if (user is not null)
                 {
-                    model.Response = new MessageResponseModel()
-                    {
-                        IsSuccess = false,
-                        Message = "User Already Exist!"
-                    };
-                    goto result;
+                    //model.Response = new MessageResponseModel()
+                    //{
+                    //    IsSuccess = false,
+                    //    Message = "User Already Exist!"
+                    //};
+                    //goto result;
+                    return Result<RegistrationResponseModel>.FailureResult("User already exists.");
                 }
 
                 string hashedPassword = reqModel.Password.SHA256HexHashString(reqModel.UserName);
@@ -39,20 +46,28 @@ namespace GymClub.Domain.Features.User.Registration
                     PhoneNo = reqModel.PhoneNo,
                     Password = hashedPassword,
                     Gender = reqModel.Gender,
-                    JoinDate = DateTime.Today
+                    DateOfBirth = reqModel.DateOfBirth,
+                    JoinDate = DateTime.Today,
+                    DelFlag = 0
                 };
 
-                await _db.AddAsync(newUser);
-                await _db.SaveChangesAsync();
-                model.Response = new MessageResponseModel()
-                {
-                    IsSuccess = true,
-                    Message = "Registered Successfully!"
-                };
+                //await _db.AddAsync(newUser);
+                //await _db.SaveChangesAsync();
+                //int result = _dapperService.Execute(SqlQueries.RegisterNewUser, new {
+                //    ulid,
+                //    reqModel.UserName,
+                //    reqModel.PhoneNo,
+                //    hashedPassword,
+                //    reqModel.Gender,
+                //    reqModel.DateOfBirth,
+                //    DateTime.Today,
+                //    DelFlag = 0
+                //});
+                return Result<RegistrationResponseModel>.SuccessResult("Registered successfully.");
             }
             catch(Exception ex)
             {
-                model.Response.Message = ex.ToString();
+                _logger.LogError(ex, ex.Message);
             }
         result:
             return model;

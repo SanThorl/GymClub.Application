@@ -39,7 +39,7 @@ namespace GymClub.App.Components.Pages
                 await _injectService.DisableLoading();
                 _formType = EnumFormType.DayList;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
             }
@@ -47,17 +47,25 @@ namespace GymClub.App.Components.Pages
 
         private async Task ShowExercises(int day)
         {
-            _selectedDay = day;
-            await _injectService.EnableLoading();
-            eListForEachDay = lstExercise.Where(x => x.Day == day).ToList();
-
-            _formType = EnumFormType.ExerciseList;
-            foreach (var exercise in eListForEachDay)
+            try
             {
-                exercise.RemainingSeconds = exercise.TotalSeconds;
-                exercise.RemainingTime = exercise.Time;
+                _selectedDay = day;
+                await _injectService.EnableLoading();
+                eListForEachDay = lstExercise.Where(x => x.Day == day).ToList();
+
+                _formType = EnumFormType.ExerciseList;
+                foreach (var exercise in eListForEachDay)
+                {
+                    exercise.RemainingSeconds = exercise.TotalSeconds;
+                    exercise.RemainingTime = exercise.Time;
+                }
+                await _injectService.DisableLoading();
             }
-            await _injectService.DisableLoading();
+            catch (Exception ex)
+            {
+                await _injectService.DisableLoading();
+                _logger.LogError(ex, ex.Message);
+            }
         }
 
         private async Task StartTimer(ExerciseModel exercise)
@@ -102,9 +110,7 @@ namespace GymClub.App.Components.Pages
 
         private async Task Finish(int workoutId, int day)
         {
-            //_formType = EnumFormType.ExerciseList;
-            await _workout.UpdateDay(_selectedWorkoutId,day);
-            //await ShowExercises(day);
+            await _workout.UpdateDay(_selectedWorkoutId, day);
             _nav.NavigateTo("/dashboard");
         }
     }

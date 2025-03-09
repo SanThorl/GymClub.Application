@@ -10,7 +10,7 @@ namespace GymClub.App.Components.Pages
     public partial class P_SignIn
     {
         [Inject] private AuthenticationStateProvider authStateProvider { get; set; }
-
+        ILogger<P_Workout> _logger;
         private LoginRequestModel _reqModel = new LoginRequestModel();
         private LoginResponseModel model;
 
