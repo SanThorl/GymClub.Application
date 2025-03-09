@@ -19,5 +19,5 @@ public partial class TblUser
 
     public DateTime JoinDate { get; set; }
 
-    public byte DelFlag { get; set; }
+    public bool DelFlag { get; set; }
 }

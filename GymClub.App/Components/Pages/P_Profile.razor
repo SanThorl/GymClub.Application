@@ -1,61 +1,50 @@
-﻿@* @page "/profile"
+﻿@page "/profile"
+@layout MainLayout
+@rendermode RenderMode.InteractiveServer
+@using GymClub.App.Components.Layout
+@using GymClub.Domain.Features.User.Profile
 @inject AuthenticationStateProvider _authStateProvider
+@inject ProfileService _profileService
 
-<div class="card rounded-4">
-    <div class="card-body p-4">
-        <div class="row">
-            <div class="col-md-2">
-                <div class="position-relative mb-5 text-center">
-                    <img src="assets/images/gallery/profile-cover.png" class="img-fluid rounded-4 shadow" alt="">
-                    <div>
-                        <img src="@_imagePath" class="img-fluid rounded-circle p-1 bg-grd-danger shadow" style="width: 170px;height: 170px;object-fit: cover;" width="170" height="170" alt="">
+@if(model is not null){
+    <div class="card rounded-4">
+        <div class="card-body p-4">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="position-relative mb-5 text-center">
+                        <div>
+                            <img src="@_imagePathDefault" class="img-fluid rounded-circle p-1 bg-grd-danger shadow" style="width: 170px;height: 170px;object-fit: cover;" width="170" height="170" alt="">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-10">
-                <div class="full-info mt-4">
-                    <div class="info-list d-flex flex-column gap-3">
-                        <div class="info-list-item d-flex align-items-center gap-3">
-                            <i class="fa-solid fa-building-user"></i>
-                            <p class="mb-0">Merchant Code: @_model.MerchantCode</p>
-                        </div>
-                        <div class="info-list-item d-flex align-items-center gap-3">
-                            <i class="fa-regular fa-circle-user"></i>
-                            <p class="mb-0">Full Name: @_model.OwnerName</p>
-                        </div>
-                        <div class="info-list-item d-flex align-items-center gap-3">
-                            <i class="fa-regular fa-envelope"></i>
-                            <p class="mb-0">Email: @_model.Email</p>
-                        </div>
-                        <div class="info-list-item d-flex align-items-center gap-3">
-                            <i class="fa-solid fa-mobile"></i>
-                            <p class="mb-0">Phone: @_model.PhoneNo</p>
-                        </div>
-                        <div class="kewords align-items-center gap-3 overflow-x-auto mb-5">
-                            <label class="btn btn-outline-warning mr-2">
-                                <MudIcon Icon="@Icons.Material.Filled.AttachFile" Title="Attach File" />
-                                <InputFile class="custom-file-input d-none" multiple OnChange="@OnChange" accept="image/*" id="inputFile" />
-                                Attach File
-                            </label>
-                            <button class="btn btn-outline-success" type="button" onclick="@UpdateProfile">
-                                <MudIcon Icon="@Icons.Material.Filled.Save" Title="Update Profile" />
-                                Update
-                            </button>
+                <div class="col-md-10">
+                    <div class="full-info mt-4">
+                        <div class="info-list d-flex flex-column gap-3">
+                            <div class="info-list-item d-flex align-items-center gap-3">
+                                <i class="fa-regular fa-circle-user"></i>
+                                <p class="mb-0">Full Name: @model.UserName</p>
+                            </div>
+                            <div class="info-list-item d-flex align-items-center gap-3">
+                                <i class="fa-solid fa-mobile"></i>
+                                <p class="mb-0">Phone: @model.PhoneNo</p>
+                            </div>
+                            <div class="info-list-item d-flex align-items-center gap-3">
+                                <i class="fa-solid fa-mobile"></i>
+                                <p class="mb-0">Gender: @model.Gender</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+}
 
 @code {
     private UserSessionModel _userSession = new();
     private string _imagePathDefault = "images/user.png";
-    private string _merchantName;
-    private string? _imagePath;
-    private RegistrationRequestModel reqModel = new();
-    private RegistrationResponseModel _model = new();
+    private ProfileRequestModel _reqModel = new();
+    private RegistrationResponseModel model = new();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -65,126 +54,22 @@
             var customAuthStateProvider = (CustomAuthenticationStateProvider)_authStateProvider;
             var authState = await customAuthStateProvider.GetAuthenticationStateAsync();
             _userSession = await customAuthStateProvider.GetUserData();
+            _reqModel.UserId = _userSession.UserId;
 
-            await GetImageUrl();
+            await Profile();
 
             await _injectService.DisableLoading();
             StateHasChanged();
         }
     }
 
-    private async Task GetImageUrl()
+    private async Task Profile()
     {
-        try
+        model = await _profileService.Profile(_reqModel);
+        if (model.Response.IsError)
         {
-            var responseImageUrl = await _merchantApiService.ImageUrl(new Models.MerchantProfile.MerchantRequestModel
-                {
-                    UserId = _userSession.UserId,
-                });
-            if (responseImageUrl.Response.IsSuccess)
-            {
-                _imagePath = "data:image/png;base64," + responseImageUrl.ImagePath;
-                _merchantName = responseImageUrl.MerchantInfo.OwnerName;
-                _model = responseImageUrl.MerchantInfo;
-            }
-            else
-            {
-                _imagePath = _imagePathDefault;
-            }
-        }
-        catch (Exception ex)
-        {
-            await _injectService.DisableLoading();
-            Console.WriteLine(ex.ToString());
+            await _injectService.ShowErrorMessage(model.Response.Message);
+            return;
         }
     }
-
-    private async Task UploadFiles(IBrowserFile file)
-    {
-        try
-        {
-            await using MemoryStream fs = new MemoryStream();
-            await file.OpenReadStream(maxAllowedSize: 1048576).CopyToAsync(fs);
-            byte[] somBytes = GetBytes(fs);
-            _imagePath = "data:image/png;base64," + Convert.ToBase64String(somBytes, 0, somBytes.Length);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
-        }
-    }
-
-    private byte[] GetBytes(Stream stream)
-    {
-        var bytes = new byte[stream.Length];
-        stream.Seek(0, SeekOrigin.Begin);
-        stream.ReadAsync(bytes, 0, bytes.Length);
-        stream.Dispose();
-        return bytes;
-    }
-
-    private async Task OnChange(InputFileChangeEventArgs e)
-    {
-        try
-        {
-            var files = e.GetMultipleFiles(); // get the files selected by the users
-            if (files.Count == 0)
-            {
-                return;
-            }
-
-            var file = files[0];
-            await using MemoryStream fs = new MemoryStream();
-            await file.OpenReadStream(maxAllowedSize: 1048576).CopyToAsync(fs);
-            byte[] somBytes = GetBytes(fs);
-            string base64Str = Convert.ToBase64String(somBytes, 0, somBytes.Length);
-            _imagePath = "data:image/png;base64," + base64Str;
-            reqModel.ImageUrl = base64Str;
-
-            StateHasChanged();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
-        }
-    }
-
-    private async Task UpdateProfile()
-    {
-        try
-        {
-            await _injectService.EnableLoading();
-            reqModel.UserId = _userSession.UserId!;
-            var response = await _merchantApiService.UpdateProfile(reqModel);
-            if (response.Response.IsError)
-            {
-                await _injectService.ShowDialog
-                (
-                    "Error!",
-                    response.Response.RespDesp,
-                    EnumRespType.ME,
-                    EnumMessageBoxType.Ok
-                );
-                return;
-            }
-
-            await _injectService.DisableLoading();
-            var dialogResult = await _injectService.ShowDialog
-            (
-                "Success!",
-                response.Response.RespDesp,
-                EnumRespType.MS,
-                EnumMessageBoxType.Ok
-            );
-            if (!dialogResult.Canceled)
-            {
-                _nav.Reload();
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
-            await _injectService.DisableLoading();
-        }
-    }
-} *@
+}

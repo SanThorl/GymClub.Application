@@ -16,14 +16,14 @@ namespace GymClub.Shared
                                                     WHERE WorkoutId = @workoutId AND Day = @day";
 
         public static string RegisterNewUser = @"INSERT INTO [dbo].[Tbl_User]
-           ([UserId]
-           ,[UserName]
-           ,[PhoneNo]
-           ,[Password]
-           ,[Gender]
-           ,[DateOfBirth]
-           ,[JoinDate]
-           ,[DelFlag])
+                                                   ([UserId]
+                                                   ,[UserName]
+                                                   ,[PhoneNo]
+                                                   ,[Password]
+                                                   ,[Gender]
+                                                   ,[DateOfBirth]
+                                                   ,[JoinDate]
+                                                   ,[DelFlag])
      VALUES(@UserId,@UserName,@PhoneNo,@Password,@Gender,@DateOfBirth,@JoinDate,@DelFlag)";
     }
 }

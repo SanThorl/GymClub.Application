@@ -17,29 +17,28 @@ namespace GymClub.Domain.Features.User.Registration
             _dapperService = dapperService;
         }
 
-        public async Task<Result<RegistrationResponseModel>> RegisterUser(RegistrationRequestModel reqModel)
+        public async Task<RegistrationResponseModel> RegisterUser(RegistrationRequestModel reqModel)
         {
-            Result<RegistrationResponseModel> model = new Result<RegistrationResponseModel>();
+            RegistrationResponseModel model = new RegistrationResponseModel();
             try
             {
                 TblUser? user = await _db.TblUsers.AsNoTracking()
-                    .FirstOrDefaultAsync(x => x.UserName.ToLower().Trim() == reqModel.UserName.ToLower().Trim() 
+                    .FirstOrDefaultAsync(x => x.UserName.ToLower().Trim() == reqModel.UserName.ToLower().Trim()
                     && x.PhoneNo == reqModel.PhoneNo);
                 if (user is not null)
                 {
-                    //model.Response = new MessageResponseModel()
-                    //{
-                    //    IsSuccess = false,
-                    //    Message = "User Already Exist!"
-                    //};
-                    //goto result;
-                    return Result<RegistrationResponseModel>.FailureResult("User already exists.");
+                    model.Response = new MessageResponseModel()
+                    {
+                        IsSuccess = false,
+                        Message = "User Already Exist!"
+                    };
+                    goto result;
                 }
 
                 string hashedPassword = reqModel.Password.SHA256HexHashString(reqModel.UserName);
                 var ulid = Ulid.NewUlid().ToString();
-
-                TblUser newUser = new TblUser()
+                
+                int result = _dapperService.Execute(SqlQueries.RegisterNewUser, new
                 {
                     UserId = ulid,
                     UserName = reqModel.UserName,
@@ -49,23 +48,25 @@ namespace GymClub.Domain.Features.User.Registration
                     DateOfBirth = reqModel.DateOfBirth,
                     JoinDate = DateTime.Today,
                     DelFlag = 0
-                };
-
-                //await _db.AddAsync(newUser);
-                //await _db.SaveChangesAsync();
-                //int result = _dapperService.Execute(SqlQueries.RegisterNewUser, new {
-                //    ulid,
-                //    reqModel.UserName,
-                //    reqModel.PhoneNo,
-                //    hashedPassword,
-                //    reqModel.Gender,
-                //    reqModel.DateOfBirth,
-                //    DateTime.Today,
-                //    DelFlag = 0
-                //});
-                return Result<RegistrationResponseModel>.SuccessResult("Registered successfully.");
+                });
+                if (result > 0)
+                {
+                    model.Response = new MessageResponseModel()
+                    {
+                        IsSuccess = true,
+                        Message = "Registered Successfully!"
+                    };
+                }
+                else
+                {
+                    model.Response = new MessageResponseModel()
+                    {
+                        IsSuccess = false,
+                        Message = "Registration Failed!"
+                    };
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
             }

@@ -36,4 +36,9 @@ public class RegistrationResponseModel
     public MessageResponseModel Response { get; set; }
 }
 
+public class ProfileRequestModel
+{
+    public string UserId { get; set; }
+}
+
 

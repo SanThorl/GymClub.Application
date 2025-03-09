@@ -13,7 +13,7 @@ public partial class TblWorkout
 
     public string Level { get; set; } = null!;
 
-    public byte? DelFlag { get; set; }
+    public bool? DelFlag { get; set; }
 
     public decimal? Price { get; set; }
 }

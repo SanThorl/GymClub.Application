@@ -1,6 +1,7 @@
 using GymClub.App.Components;
 using GymClub.App.Services;
 using GymClub.Database.DbModels;
+using GymClub.Domain.Features.User.Profile;
 using GymClub.Domain.Features.Workouts;
 using GymClub.Shared;
 using Microsoft.EntityFrameworkCore;
@@ -58,6 +59,7 @@ try
     builder.Services.AddScoped<RegistrationService>();
     builder.Services.AddScoped<LoginService>();
     builder.Services.AddScoped<WorkoutService>();
+    builder.Services.AddScoped<ProfileService>();
     builder.Services.AddAuthorizationCore();
     builder.Services.AddControllersWithViews().AddJsonOptions(opt =>
     {
