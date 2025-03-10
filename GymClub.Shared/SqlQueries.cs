@@ -25,5 +25,7 @@ namespace GymClub.Shared
                                                    ,[JoinDate]
                                                    ,[DelFlag])
      VALUES(@UserId,@UserName,@PhoneNo,@Password,@Gender,@DateOfBirth,@JoinDate,@DelFlag)";
+
+        public static string IsPaid = @"";
     }
 }

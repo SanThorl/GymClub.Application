@@ -23,7 +23,8 @@ namespace GymClub.Domain.Features.Payment
             {
 
                 var workoutItem = await _db.TblPayments.AsNoTracking()
-                    .FirstOrDefaultAsync(x => x.WorkoutId == reqModel.WorkoutId);
+                    .FirstOrDefaultAsync(x =>x.UserId==reqModel.CurrentUserId
+                    && x.WorkoutId == reqModel.WorkoutId);
                 if (workoutItem is null)
                 {
                     model.Response = new MessageResponseModel

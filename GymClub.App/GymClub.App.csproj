@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\jquery\" />
+    <Folder Include="wwwroot\plugins\apexcharts\" />
     <Folder Include="wwwroot\plugins\notiflix-3-2-7\" />
   </ItemGroup>
 

@@ -17,9 +17,8 @@ namespace GymClub.Domain.Features.Payment
         public string PaymentStatus { get; set; }
     }
 
-    public class PaymentRequestModel
+    public class PaymentRequestModel : BaseRequestModel
     {
-        public string UserId { get; set; }
         public int WorkoutId { get; set; }
     }
     public class PaymentResponseModel

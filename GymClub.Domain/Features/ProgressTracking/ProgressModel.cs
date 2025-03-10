@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace GymClub.Domain.Features.ProgressTracking
 {
-    internal class ProgressModel
+    public class ProgressModel: BaseRequestModel
     {
+
     }
 }
