@@ -9,7 +9,8 @@ namespace GymClub.Shared
     public static class SqlQueries
     {
         public static string WorkoutList = @"SELECT *
-                                            FROM Tbl_Workout with (nolock)";
+                                            FROM Tbl_Workout
+                                            INNERJOIN Tbl_User ";
 
         public static string FinishedExercises = @"UPDATE TblExercises
                                                     SET IsDone = 1

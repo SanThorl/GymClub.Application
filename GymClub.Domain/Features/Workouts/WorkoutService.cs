@@ -1,4 +1,5 @@
-﻿using GymClub.Database.DbModels;
+﻿using Dapper;
+using GymClub.Database.DbModels;
 using GymClub.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -23,7 +24,7 @@ public class WorkoutService
         _logger = logger;
     }
 
-    public async Task<WorkoutResponseModel> GetWorkoutList()
+    public async Task<Result<WorkoutResponseModel>> GetWorkoutList()
     {
         WorkoutResponseModel model = new WorkoutResponseModel();
         try
@@ -31,37 +32,33 @@ public class WorkoutService
             var lst = _dapperService.Query<WorkoutModel>(SqlQueries.WorkoutList).ToList();
             if (lst is null)
             {
-                model.Response = new MessageResponseModel
-                {
-                    IsSuccess = false,
-                    Message = "Workouts are not available now!"
-                };
-                goto result;
+                //model.Response = new MessageResponseModel
+                //{
+                //    IsSuccess = false,
+                //    Message = "Workouts are not available now!"
+                //};
+                //goto result;
+                return Result<WorkoutResponseModel>.FailureResult("Workouts are not available now!");
             }
+            
             model.lstData = lst.Select(x => new WorkoutModel
             {
+                WorkoutId = x.WorkoutId,
                 WorkoutName = x.WorkoutName,
                 Place = x.Place,
-                Level = x.Level,
-                WorkoutId = x.WorkoutId
+                Level = x.Level
             }).ToList();
 
-            model.Response = new MessageResponseModel
-            {
-                IsSuccess = true,
-                Message = "The clock is ticking. Go on, keep building the person you want to be!"
-            };
+            return Result<WorkoutResponseModel>.SuccessResult(model, "The clock is ticking.Go on, keep building the person you want to be!");
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, ex.Message);
+            return Result<WorkoutResponseModel>.FailureResult(ex);
         }
-
-    result:
-        return model;
     }
 
-    public async Task<WorkoutResponseModel> GetWorkoutById(int id)
+    public async Task<Result<WorkoutResponseModel>> GetWorkoutById(int id)
     {
         WorkoutResponseModel model = new WorkoutResponseModel();
         try
@@ -69,12 +66,7 @@ public class WorkoutService
             var data = await _db.TblWorkouts.FirstOrDefaultAsync(x => x.WorkoutId == id);
             if (data is null)
             {
-                model.Response = new MessageResponseModel
-                {
-                    IsSuccess = false,
-                    Message = "Workout is not available now!"
-                };
-                goto result;
+                return Result<WorkoutResponseModel>.FailureResult("Workout is not available now!");
             }
             model.Data = new WorkoutModel
             {
@@ -99,22 +91,16 @@ public class WorkoutService
                 .Distinct().ToListAsync();
 
             model.ExerciseList = days;
-            model.Response = new MessageResponseModel
-            {
-                IsSuccess = true,
-                Message = "The clock is ticking. Go on, keep building the person you want to be!"
-            };
+            return Result<WorkoutResponseModel>.SuccessResult(model, "The clock is ticking. Go on, keep building the person you want to be!");
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, ex.Message);
+            return Result<WorkoutResponseModel>.FailureResult(ex);
         }
-
-    result:
-        return model;
     }
 
-    public async Task UpdateDay(int workoutId,int day)
+    public async Task UpdateDay(int workoutId, int day)
     {
         //var result = _dapperService.Execute(SqlQueries.FinishedExercises, new { workoutId, day });
         await _db.TblExercises

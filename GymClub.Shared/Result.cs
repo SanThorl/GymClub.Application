@@ -35,4 +35,8 @@ public class Result<T>
     {
         return new Result<T> { Success = false, Message = message };
     }
+    public static Result<T> FailureResult(Exception ex)
+    {
+        return new Result<T> { Success = false, Message = ex.ToString() };
+    }
 }

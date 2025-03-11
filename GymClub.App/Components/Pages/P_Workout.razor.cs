@@ -1,5 +1,6 @@
 ﻿using GymClub.Domain.Features.Workouts;
 using GymClub.Domain.Models;
+using GymClub.Shared;
 using GymClub.Shared.Enum;
 using Microsoft.AspNetCore.Components.Web;
 using System.Diagnostics.Metrics;
@@ -8,8 +9,8 @@ namespace GymClub.App.Components.Pages
 {
     public partial class P_Workout
     {
-        ILogger<P_Workout> _logger;
-        private WorkoutResponseModel model;
+        private UserSessionModel _userSession;
+        private Result<WorkoutResponseModel> model;
         private List<WorkoutModel> lst;
         private List<ExerciseModel> lstExercise;
         private List<ExerciseModel> eListForEachDay = new();
@@ -17,15 +18,30 @@ namespace GymClub.App.Components.Pages
         private IList<WorkoutModel> _selectedWorkout = new List<WorkoutModel>();
         private int _selectedDay;
         private int _selectedWorkoutId;
-        protected override async Task OnInitializedAsync()
+        private WorkoutModel data;
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            await List();
+            if (firstRender)
+            {
+                try
+                {
+                    await _injectService.EnableLoading();
+                    var customAuthStateProvider = (CustomAuthenticationStateProvider)_authStateProvider;
+                    var authState = await customAuthStateProvider.GetAuthenticationStateAsync();
+                    _userSession = await customAuthStateProvider.GetUserData();
+                    await _injectService.DisableLoading();
+                    await List();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, ex.Message);
+                }
+            }
         }
-
         private async Task List()
         {
             model = await _workout.GetWorkoutList();
-            lst = model.lstData;
+            lst = model.Data!.lstData;
         }
 
         async Task WorkoutCollection(int workoutId)
@@ -35,7 +51,8 @@ namespace GymClub.App.Components.Pages
                 await _injectService.EnableLoading();
                 model = await _workout.GetWorkoutById(workoutId);
                 _selectedWorkoutId = workoutId;
-                lstExercise = model.ExerciseList;
+                lstExercise = model.Data!.ExerciseList;
+                data = model.Data.Data;
                 await _injectService.DisableLoading();
                 _formType = EnumFormType.DayList;
             }

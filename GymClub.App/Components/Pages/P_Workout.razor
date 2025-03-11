@@ -2,12 +2,13 @@
 @using GymClub.App.Components.Layout
 @using GymClub.Domain.Features.Workouts
 @layout MainLayout
-@inject WorkoutService _workout
 @rendermode RenderMode.InteractiveServer
 @using GymClub.Shared.Enum
 @using Radzen
 @using Radzen.Blazor
-
+@inject WorkoutService _workout
+@inject AuthenticationStateProvider _authStateProvider
+@inject ILogger<P_Workout> _logger
 
 @if (_formType == EnumFormType.WorkoutList)
 {
@@ -48,8 +49,8 @@ else if (_formType == EnumFormType.DayList)
 					<MudCard Class="p-4">
 						<!-- Card Content Section -->
 						<MudCardContent>
-							<MudText Typo="Typo.h4" Bold="true">@model.Data.WorkoutName</MudText>
-							<MudText Typo="Typo.body1">@model.Data.Level</MudText>
+							<MudText Typo="Typo.h4" Bold="true">@data.WorkoutName</MudText>
+							<MudText Typo="Typo.body1">@data.Level</MudText>
 						</MudCardContent>
 					</MudCard>
 				</MudContainer>
@@ -90,35 +91,7 @@ else{
 		</RadzenDataList>
 		<RadzenButton Text="FINISH WORKOUT"
 					  Click="() => Finish(_selectedWorkoutId,_selectedDay)"
-					  Style="margin-top: 10px; width: 100%;" />
+					  Style="margin-top: 10px; width: 100%;"
+					  class="violet-button" />
 	</RadzenCard>
-	
 }
-@* <div class="row">
-	@if (lst is not null)
-	{
-		int count = 0;
-		@foreach (var data in lst)
-		{
-			<div class="col pt-sm-2 mb-3">
-				<div style="width: 350px; height: 300px; margin: auto">
-					<MudCard Class="my-5" @onclick="() => WorkoutCollection(data)">
-						<!-- Image Section -->
-						<MudCardMedia Image=@($"/images/gym{count++}.jpg") 
-										Alt="@data.WorkoutName" 
-										Fit="ObjectFit.Contain" 
-										Width ="320"
-										Height="255"/>
-
-						<!-- Card Content Section -->
-						<MudCardContent>
-							<MudText Typo="Typo.h5" Bold="true">@data.WorkoutName</MudText>
-							<MudText Typo="Typo.body1">@data.Level</MudText>
-							<MudText Typo="Typo.body1">@data.Place</MudText>
-						</MudCardContent>
-					</MudCard>
-				</div>
-			</div>
-		}
-	}
-</div> *@

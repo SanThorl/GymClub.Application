@@ -36,7 +36,7 @@
 						</div>
 						<div class="mb-3 col-md-6">
 							<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">Phone</RadzenText>
-							<RadzenTextBox @bind-Value="@_reqModel.PhoneNo" Class="w-100" />
+							<RadzenTextBox @bind-Value="@_reqModel.PhoneNo" Class="w-100" MaxLength="11" />
 							<ValidationMessage For="@(() => _reqModel.PhoneNo)" />
 						</div>
 						<div class="mb-3 col-md-6">
@@ -49,11 +49,6 @@
 						</div>
 						<div class="mb-3 col-md-6">
 							<RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H6">Date Of Birth</RadzenText>
-							@* <RadzenDatePicker @bind-Value="_reqModel.DateOfBirth" Name="DateOfBirth"
-                                  DateFormat="dd-MM-yyyy"
-                                  Max="DateTime.Today"
-                                  AllowInput="false"
-                                  Class="w-100"/> *@
 							<div class="input-group">
 								<RadzenDatePicker @bind-Value=@_reqModel.DateOfBirth Name="DOB" ShowCalendarWeek />
 							</div>
@@ -61,7 +56,7 @@
 						<div class="mb-3 col-md-4">
 							<br />
 							<div class="d-flex">
-								<RadzenButton ButtonStyle="ButtonStyle.Primary" Text="Sign Up" Type="Submit" />
+								<RadzenButton Class="violet-button" ButtonStyle="ButtonStyle.Primary" Text="Sign Up" Type="Submit" />
 							</div>
 						</div>
 					</div>

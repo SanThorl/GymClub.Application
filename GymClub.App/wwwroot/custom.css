@@ -14,3 +14,9 @@
 .text-velvet {
     color: #8A2BE2 !important; /* Violet Color */
 }
+
+.violet-button {
+    --rz-primary-color: #8a2be2; /* Violet color */
+    --rz-primary-hover-color: #7a28d7; /* Slightly darker for hover */
+    --rz-primary-active-color: #6a20c7; /* Even darker for active state */
+}
