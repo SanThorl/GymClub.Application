@@ -25,7 +25,7 @@ namespace GymClub.Domain.Features.User.Profile
             _dapperService = dapperService;
         }
 
-        public async Task<RegistrationResponseModel> Profile(ProfileRequestModel reqUserId)
+        public async Task<Result<RegistrationResponseModel>> Profile(ProfileRequestModel reqUserId)
         {
             RegistrationResponseModel model = new RegistrationResponseModel();
             try
@@ -34,29 +34,19 @@ namespace GymClub.Domain.Features.User.Profile
                     .FirstOrDefaultAsync(x => x.UserId == reqUserId.UserId);
                 if (user is null)
                 {
-                    model.Response = new MessageResponseModel()
-                    {
-                        IsSuccess = false,
-                        Message = "User Not Found!"
-                    };
-                    goto result;
+                    return Result<RegistrationResponseModel>.NoDataFoundResult("Sorry, No Data is Available!");
                 }
                 model.UserId = user.UserId;
                 model.UserName = user.UserName;
                 model.PhoneNo = user.PhoneNo;
                 model.Gender = user.Gender;
-                model.Response = new MessageResponseModel()
-                {
-                    IsSuccess = true,
-                    Message = " "
-                };
+                return Result<RegistrationResponseModel>.SuccessResult(model, "Welcome back!");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
+                return Result<RegistrationResponseModel>.FailureResult(ex);
             }
-        result:
-            return model;
         }
     }
 }

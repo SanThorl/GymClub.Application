@@ -3,8 +3,10 @@
 @rendermode RenderMode.InteractiveServer
 @using GymClub.App.Components.Layout
 @using GymClub.Domain.Features.User.Profile
+@using GymClub.Shared
 @inject AuthenticationStateProvider _authStateProvider
 @inject ProfileService _profileService
+@inject ILogger<P_Profile> _logger
 
 @if(model is not null){
     <div class="card rounded-4">
@@ -22,15 +24,15 @@
                         <div class="info-list d-flex flex-column gap-3">
                             <div class="info-list-item d-flex align-items-center gap-3">
                                 <i class="fa-regular fa-circle-user"></i>
-                                <p class="mb-0">Full Name: @model.UserName</p>
+                                <p class="mb-0">Full Name: @model.Data!.UserName</p>
                             </div>
                             <div class="info-list-item d-flex align-items-center gap-3">
                                 <i class="fa-solid fa-mobile"></i>
-                                <p class="mb-0">Phone: @model.PhoneNo</p>
+                                <p class="mb-0">Phone: @model.Data.PhoneNo</p>
                             </div>
                             <div class="info-list-item d-flex align-items-center gap-3">
                                 <i class="fa-solid fa-mobile"></i>
-                                <p class="mb-0">Gender: @model.Gender</p>
+                                <p class="mb-0">Gender: @model.Data.Gender</p>
                             </div>
                         </div>
                     </div>
@@ -44,7 +46,7 @@
     private UserSessionModel _userSession = new();
     private string _imagePathDefault = "images/user.png";
     private ProfileRequestModel _reqModel = new();
-    private RegistrationResponseModel model = new();
+    private Result<RegistrationResponseModel> model = new();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -66,9 +68,9 @@
     private async Task Profile()
     {
         model = await _profileService.Profile(_reqModel);
-        if (model.Response.IsError)
+        if (!model.Success)
         {
-            await _injectService.ShowErrorMessage(model.Response.Message);
+            await _injectService.ShowErrorMessage(model.Message);
             return;
         }
     }

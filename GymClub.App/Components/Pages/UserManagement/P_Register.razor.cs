@@ -1,19 +1,18 @@
-﻿
-using GymClub.Shared;
+﻿using GymClub.Shared;
 using Microsoft.IdentityModel.Tokens;
 
-namespace GymClub.App.Components.Pages
+namespace GymClub.App.Components.Pages.UserManagement
 {
     public partial class P_Register
     {
         private RegistrationRequestModel _reqModel = new RegistrationRequestModel();
-        private RegistrationResponseModel model;
+        private Result<RegistrationResponseModel> model;
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
                 await _injectService.EnableLoading();
-                
+
                 StateHasChanged();
                 await _injectService.DisableLoading();
             }
@@ -42,12 +41,12 @@ namespace GymClub.App.Components.Pages
             }
 
             model = await _registrationService.RegisterUser(_reqModel);
-            if (model.Response.IsError)
+            if (!model.Success)
             {
-                await _injectService.ShowErrorMessage(model.Response.Message);
+                await _injectService.ShowErrorMessage(model.Message);
                 return;
             }
-            await _injectService.ShowSuccessMessage(model.Response.Message);
+            await _injectService.ShowSuccessMessage(model.Message);
             _nav.NavigateTo("/signIn");
             StateHasChanged();
         }
@@ -58,4 +57,4 @@ namespace GymClub.App.Components.Pages
         }
     }
 }
-    
+

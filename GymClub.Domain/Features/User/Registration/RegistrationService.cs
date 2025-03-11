@@ -17,7 +17,7 @@ namespace GymClub.Domain.Features.User.Registration
             _dapperService = dapperService;
         }
 
-        public async Task<RegistrationResponseModel> RegisterUser(RegistrationRequestModel reqModel)
+        public async Task<Result<RegistrationResponseModel>> RegisterUser(RegistrationRequestModel reqModel)
         {
             RegistrationResponseModel model = new RegistrationResponseModel();
             try
@@ -27,12 +27,7 @@ namespace GymClub.Domain.Features.User.Registration
                     && x.PhoneNo == reqModel.PhoneNo);
                 if (user is not null)
                 {
-                    model.Response = new MessageResponseModel()
-                    {
-                        IsSuccess = false,
-                        Message = "User Already Exist!"
-                    };
-                    goto result;
+                    return Result<RegistrationResponseModel>.DuplicateValidateResult("User already exists!");
                 }
 
                 string hashedPassword = reqModel.Password.SHA256HexHashString(reqModel.UserName);
@@ -51,27 +46,18 @@ namespace GymClub.Domain.Features.User.Registration
                 });
                 if (result > 0)
                 {
-                    model.Response = new MessageResponseModel()
-                    {
-                        IsSuccess = true,
-                        Message = "Registered Successfully!"
-                    };
+                    return Result<RegistrationResponseModel>.SuccessResult(model, "Registration Successful!");
                 }
                 else
                 {
-                    model.Response = new MessageResponseModel()
-                    {
-                        IsSuccess = false,
-                        Message = "Registration Failed!"
-                    };
+                    return Result<RegistrationResponseModel>.FailureResult("Registration Failed!");
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
+                return Result<RegistrationResponseModel>.FailureResult(ex);
             }
-        result:
-            return model;
         }
     }
 }

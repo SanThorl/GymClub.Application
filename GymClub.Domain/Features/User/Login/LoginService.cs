@@ -5,19 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using GymClub.Database.DbModels;
 using GymClub.Shared;
+using Microsoft.Extensions.Logging;
 
 namespace GymClub.Domain.Features.User.Login;
 
 public class LoginService
 {
     private readonly AppDbContext _db;
+    private readonly ILogger<LoginService> _logger;
 
-    public LoginService(AppDbContext db)
+    public LoginService(AppDbContext db, ILogger<LoginService> logger)
     {
         _db = db;
+        _logger = logger;
     }
 
-    public async Task<LoginResponseModel> SignIn(LoginRequestModel reqModel)
+    public async Task<Result<LoginResponseModel>> SignIn(LoginRequestModel reqModel)
     {
         LoginResponseModel model = new LoginResponseModel();
         try
@@ -28,12 +31,7 @@ public class LoginService
 
             if (item is null)
             {
-                model.Response = new MessageResponseModel
-                {
-                    IsSuccess = false,
-                    Message = "Please, fill the correct name and password"
-                };
-                goto result;
+                return Result<LoginResponseModel>.FailureResult("Please, fill the correct name and password");
             }
 
             //string sessionId = Guid.NewGuid().ToString();
@@ -52,21 +50,12 @@ public class LoginService
             //model.SessionId = login.SessionId;
             model.UserName = item.UserName;
             model.UserId = item.UserId;
-            model.Response = new MessageResponseModel
-            {
-                IsSuccess = true,
-                Message = "Login Successfully!"
-            };
+            return Result<LoginResponseModel>.SuccessResult(model, "Welcome back!");
         }
         catch(Exception ex)
         {
-            model.Response = new MessageResponseModel
-            {
-                Message = ex.ToString()
-            };
+            _logger.LogError(ex.Message, ex);
+            return Result<LoginResponseModel>.FailureResult(ex);
         }
-        
-    result:
-        return model;
     }
 }

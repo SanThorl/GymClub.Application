@@ -45,6 +45,5 @@ public class WorkoutResponseModel
 {
     public List<WorkoutModel> lstData { get; set; }
     public WorkoutModel Data { get; set; }
-    //public MessageResponseModel Response { get; set; }
     public List<ExerciseModel> ExerciseList { get; set; }
 }

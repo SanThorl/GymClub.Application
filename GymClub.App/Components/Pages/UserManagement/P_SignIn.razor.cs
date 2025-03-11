@@ -3,16 +3,16 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
+using GymClub.Shared;
 
 
-namespace GymClub.App.Components.Pages
+namespace GymClub.App.Components.Pages.UserManagement
 {
     public partial class P_SignIn
     {
         [Inject] private AuthenticationStateProvider authStateProvider { get; set; }
-        ILogger<P_Workout> _logger;
         private LoginRequestModel _reqModel = new LoginRequestModel();
-        private LoginResponseModel model;
+        private Result<LoginResponseModel> model;
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -41,15 +41,15 @@ namespace GymClub.App.Components.Pages
             }
             model = await _login.SignIn(_reqModel);
 
-            if (model.Response.IsError)
+            if (!model.Success)
             {
-                await _injectService.ShowErrorMessage(model.Response.Message);
+                await _injectService.ShowErrorMessage(model.Message);
                 return;
             }
             var userSessionModel = new UserSessionModel
             {
-                UserName = model.UserName,
-                UserId = model.UserId,
+                UserName = model.Data!.UserName,
+                UserId = model.Data.UserId,
             };
             var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
             await customAuthStateProvider.UpdateAuthenticationState(userSessionModel);

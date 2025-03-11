@@ -10,8 +10,6 @@ namespace GymClub.Domain.Features.User.Registration;
 public class UserModel
 {
     public RegistrationResponseModel resModel { get; set; }
-    public MessageResponseModel Response { get; set; }
-
 }
 
 public class RegistrationRequestModel
@@ -32,8 +30,6 @@ public class RegistrationResponseModel
     public string Password { get; set; }
     public string Gender { get; set; }
     public string DateOfBirth { get; set; }
-
-    public MessageResponseModel Response { get; set; }
 }
 
 public class ProfileRequestModel
