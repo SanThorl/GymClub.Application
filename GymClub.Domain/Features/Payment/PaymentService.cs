@@ -1,4 +1,5 @@
 ﻿using GymClub.Database.DbModels;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,14 @@ namespace GymClub.Domain.Features.Payment
     public class PaymentService
     {
         private readonly AppDbContext _db;
-
-        public PaymentService(AppDbContext db)
+        private readonly ILogger<PaymentService> _logger;
+        public PaymentService(AppDbContext db, ILogger<PaymentService> logger)
         {
             _db = db;
+            _logger = logger;
         }
 
-        public async Task<PaymentResponseModel> PayforWorkout(PaymentRequestModel reqModel)
+        public async Task<Result<PaymentResponseModel>> PayforWorkout(PaymentRequestModel reqModel)
         {
             PaymentResponseModel model = new PaymentResponseModel();
             try
@@ -27,31 +29,17 @@ namespace GymClub.Domain.Features.Payment
                     && x.WorkoutId == reqModel.WorkoutId);
                 if (workoutItem is null)
                 {
-                    model.Response = new MessageResponseModel
-                    {
-                        IsSuccess = false,
-                        Message = "Payment is required!"
-                    };
-                    goto result;
+                    return Result<PaymentResponseModel>.FailureResult("Payment is required to access the workout!");
                 }
 
-                model.Response = new MessageResponseModel
-                {
-                    IsSuccess = true,
-                    Message = "Let's Update your Body!"
-                };
-                goto result;
+                return Result<PaymentResponseModel>.SuccessResult("Let's Upgrade your body!");
             }
             catch (Exception ex)
             {
-                model.Response = new MessageResponseModel
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
+               _logger.LogError(ex, ex.Message);
+                return Result<PaymentResponseModel>.FailureResult(ex);
             }
-        result:
-            return model;
+       
         }
     }
 }

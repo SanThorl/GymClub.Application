@@ -68,6 +68,10 @@ namespace GymClub.App.Components.Pages
             try
             {
                 _selectedDay = day;
+                if(_selectedDay > 2)
+                {
+
+                }
                 await _injectService.EnableLoading();
                 eListForEachDay = lstExercise.Where(x => x.Day == day).ToList();
 
