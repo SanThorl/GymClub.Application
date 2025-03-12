@@ -31,6 +31,7 @@ namespace GymClub.App.Components.Pages
                     _userSession = await customAuthStateProvider.GetUserData();
                     await _injectService.DisableLoading();
                     await List();
+                    StateHasChanged();
                 }
                 catch (Exception ex)
                 {

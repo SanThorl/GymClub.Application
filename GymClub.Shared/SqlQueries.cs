@@ -10,7 +10,7 @@ namespace GymClub.Shared
     {
         public static string WorkoutList = @"SELECT *
                                             FROM Tbl_Workout
-                                            INNERJOIN Tbl_User ";
+                                            WITH (NOLOCK)";
 
         public static string FinishedExercises = @"UPDATE TblExercises
                                                     SET IsDone = 1
