@@ -1,6 +1,7 @@
 using GymClub.App.Components;
 using GymClub.App.Services;
 using GymClub.Database.DbModels;
+using GymClub.Domain.Features.Payment;
 using GymClub.Domain.Features.User.Profile;
 using GymClub.Domain.Features.Workouts;
 using GymClub.Shared;
@@ -60,6 +61,7 @@ try
     builder.Services.AddScoped<LoginService>();
     builder.Services.AddScoped<WorkoutService>();
     builder.Services.AddScoped<ProfileService>();
+    builder.Services.AddScoped<PaymentService>();
     builder.Services.AddAuthorizationCore();
     builder.Services.AddControllersWithViews().AddJsonOptions(opt =>
     {

@@ -1,8 +1,10 @@
-﻿using GymClub.Domain.Features.Workouts;
+﻿using GymClub.Domain.Features.Payment;
+using GymClub.Domain.Features.Workouts;
 using GymClub.Domain.Models;
 using GymClub.Shared;
 using GymClub.Shared.Enum;
 using Microsoft.AspNetCore.Components.Web;
+using MudBlazor;
 using System.Diagnostics.Metrics;
 
 namespace GymClub.App.Components.Pages
@@ -19,6 +21,7 @@ namespace GymClub.App.Components.Pages
         private int _selectedDay;
         private int _selectedWorkoutId;
         private WorkoutModel data;
+        private PaymentRequestModel _paymentRequestModel = new();
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
@@ -68,9 +71,21 @@ namespace GymClub.App.Components.Pages
             try
             {
                 _selectedDay = day;
-                if(_selectedDay > 2)
+                if(_selectedDay >3 )
                 {
+                    _paymentRequestModel.CurrentUserId = _userSession.UserId;
+                    _paymentRequestModel.WorkoutId = _selectedWorkoutId;
+                    var response = await _paymentServie.IsPaid(_paymentRequestModel);
+                    if (!response)
+                    {
+                        var dialog = await _dialogService.ShowAsync<PaymentDialog>("Payment is Requied for this Workout");
+                        var result = await dialog.Result;
 
+                        if (!result.Canceled)
+                        {
+                            await List();
+                        }
+                    }
                 }
                 await _injectService.EnableLoading();
                 eListForEachDay = lstExercise.Where(x => x.Day == day).ToList();

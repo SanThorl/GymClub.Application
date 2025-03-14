@@ -13,13 +13,17 @@ namespace GymClub.Domain.Features.Payment
         public int WorkoutId { get; set; }
         public decimal Amount { get; set; }
         public DateTime PaymentDate { get; set; }
-        public string PaymentType { get; set; }
-        public string PaymentStatus { get; set; }
     }
 
     public class PaymentRequestModel : BaseRequestModel
     {
-        public int WorkoutId { get; set; }
+        public int PaymentId { get; set; }
+
+        public int? WorkoutId { get; set; }
+
+        public string? WorkoutName { get; set; }
+
+        public decimal? Amount { get; set; }
     }
     public class PaymentResponseModel
     {

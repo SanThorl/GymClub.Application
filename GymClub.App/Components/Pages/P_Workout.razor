@@ -1,5 +1,6 @@
 ﻿@page "/workout"
 @using GymClub.App.Components.Layout
+@using GymClub.Domain.Features.Payment
 @using GymClub.Domain.Features.Workouts
 @layout MainLayout
 @rendermode RenderMode.InteractiveServer
@@ -7,6 +8,7 @@
 @using Radzen
 @using Radzen.Blazor
 @inject WorkoutService _workout
+@inject PaymentService _paymentServie
 @inject AuthenticationStateProvider _authStateProvider
 @inject ILogger<P_Workout> _logger
 

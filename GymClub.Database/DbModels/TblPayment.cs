@@ -13,8 +13,6 @@ public partial class TblPayment
 
     public decimal? Amount { get; set; }
 
-    public byte? IsPaid { get; set; }
-
     public string? UserId { get; set; }
 
     public DateTime? PayDate { get; set; }

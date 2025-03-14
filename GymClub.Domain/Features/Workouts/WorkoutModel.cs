@@ -16,6 +16,7 @@ public class WorkoutModel : BaseRequestModel
     [Required]
     public string Level { get; set; }
     public int WorkoutId { get; set; }
+    public decimal Price { get; set; }
 }
 
 public class ExerciseModel : BaseRequestModel

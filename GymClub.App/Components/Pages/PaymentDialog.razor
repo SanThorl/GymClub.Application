@@ -1,21 +1,20 @@
-﻿@using MudBlazor
-@using MudBlazor.Components
-
+﻿@using GymClub.Domain.Features.Payment
+@inject PaymentService _paymentServie
 
 <MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.AddCircle" Class="mr-3 mb-n1" />
+            Payment
+        </MudText>
+    </TitleContent>
     <DialogContent>
-        Make 
+        <MudTextField @bind-Value="@_selectedWorkout.WorkoutName" Label="Code" />
+        <MudTextField @bind-Value="@_selectedWorkout.Price" Label="Name" />
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+        <MudButton Color="Color.Success" OnClick="SaveAsync">Pay</MudButton>
     </DialogActions>
 </MudDialog>
-@code {
-    [CascadingParameter]
-    private IMudDialogInstance MudDialog { get; set; }
 
-    private void Submit() => MudDialog.Close(DialogResult.Ok(true));
-
-    private void Cancel() => MudDialog.Cancel();
-}
