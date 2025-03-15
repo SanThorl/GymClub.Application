@@ -7,7 +7,7 @@ public partial class TblPayment
 {
     public int PaymentId { get; set; }
 
-    public int? WorkoutId { get; set; }
+    public string? WorkoutCode { get; set; }
 
     public string? WorkoutName { get; set; }
 

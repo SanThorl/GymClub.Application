@@ -35,10 +35,16 @@ public partial class AppDbContext : DbContext
 
             entity.ToTable("Tbl_Exercise");
 
+            entity.Property(e => e.ExerciseCode)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.ExerciseName)
                 .HasMaxLength(80)
                 .IsUnicode(false);
             entity.Property(e => e.Url).IsUnicode(false);
+            entity.Property(e => e.WorkoutCode)
+                .HasMaxLength(50)
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<TblLogEvent>(entity =>
@@ -73,9 +79,13 @@ public partial class AppDbContext : DbContext
 
             entity.ToTable("Tbl_Payment");
 
+            entity.Property(e => e.PaymentId).ValueGeneratedNever();
             entity.Property(e => e.Amount).HasColumnType("decimal(18, 0)");
             entity.Property(e => e.PayDate).HasColumnType("datetime");
             entity.Property(e => e.UserId)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.WorkoutCode)
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.WorkoutName)
@@ -120,6 +130,9 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
+            entity.Property(e => e.WorkoutCode)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.WorkoutId).ValueGeneratedOnAdd();
             entity.Property(e => e.WorkoutName)
                 .HasMaxLength(100)

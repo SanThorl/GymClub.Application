@@ -9,23 +9,22 @@ namespace GymClub.Domain.Features.Workouts;
 
 public class WorkoutModel : BaseRequestModel
 {
-    [Required]
     public string WorkoutName { get; set; }
-    [Required]
     public string Place { get; set; }
-    [Required]
     public string Level { get; set; }
     public int WorkoutId { get; set; }
+    public string WorkoutCode { get; set; }
     public decimal Price { get; set; }
 }
 
 public class ExerciseModel : BaseRequestModel
 {
     public int ExerciseId { get; set; }
+    public string ExerciseCode { get; set; }
 
     public string ExerciseName { get; set; } = null!;
 
-    public int WorkoutId { get; set; }
+    public string WorkoutCode { get; set; }
 
     public int Day { get; set; }
 

@@ -7,6 +7,8 @@ public partial class TblWorkout
 {
     public int WorkoutId { get; set; }
 
+    public string? WorkoutCode { get; set; }
+
     public string WorkoutName { get; set; } = null!;
 
     public string Place { get; set; } = null!;

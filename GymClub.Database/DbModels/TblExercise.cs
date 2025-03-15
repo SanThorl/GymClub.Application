@@ -7,9 +7,11 @@ public partial class TblExercise
 {
     public int ExerciseId { get; set; }
 
+    public string? ExerciseCode { get; set; }
+
     public string ExerciseName { get; set; } = null!;
 
-    public int WorkoutId { get; set; }
+    public string? WorkoutCode { get; set; }
 
     public int Day { get; set; }
 

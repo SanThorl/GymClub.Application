@@ -17,7 +17,7 @@
 	<RadzenText TextAlign="TextAlign.Center" TagName="TagName.H3">Select Your Workout Plan</RadzenText>
 	<RadzenDataList TItem="WorkoutModel" Data="@lst" PageSize="6" WrapItems="true" AllowPaging="true">
 		<Template Context="data">
-			<RadzenCard Style="width: 250px; cursor: pointer;" Class="rz-border-radius-3" @onclick="() => WorkoutCollection(data.WorkoutId)">
+			<RadzenCard Style="width: 250px; cursor: pointer;" Class="rz-border-radius-3" @onclick="() => WorkoutCollection(data.WorkoutCode)">
 				<!-- Divider -->
 				<hr style="border: none; background-color: rgba(0,0,0,.08); height: 1px; margin: 1rem 0;" />
 

@@ -19,7 +19,7 @@ namespace GymClub.App.Components.Pages
         private EnumFormType _formType = EnumFormType.WorkoutList;
         private IList<WorkoutModel> _selectedWorkout = new List<WorkoutModel>();
         private int _selectedDay;
-        private int _selectedWorkoutId;
+        private string _selectedWorkoutId;
         private WorkoutModel data;
         private PaymentRequestModel _paymentRequestModel = new();
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -48,13 +48,13 @@ namespace GymClub.App.Components.Pages
             lst = model.Data!.lstData;
         }
 
-        async Task WorkoutCollection(int workoutId)
+        async Task WorkoutCollection(string workoutCode)
         {
             try
             {
                 await _injectService.EnableLoading();
-                model = await _workout.GetWorkoutById(workoutId);
-                _selectedWorkoutId = workoutId;
+                model = await _workout.GetWorkoutById(workoutCode);
+                _selectedWorkoutId = workoutCode;
                 lstExercise = model.Data!.ExerciseList;
                 data = model.Data.Data;
                 await _injectService.DisableLoading();
@@ -71,10 +71,10 @@ namespace GymClub.App.Components.Pages
             try
             {
                 _selectedDay = day;
-                if(_selectedDay >3 )
+                if(_selectedDay >2 )
                 {
                     _paymentRequestModel.CurrentUserId = _userSession.UserId;
-                    _paymentRequestModel.WorkoutId = _selectedWorkoutId;
+                    _paymentRequestModel.WorkoutCode = _selectedWorkoutId;
                     var response = await _paymentServie.IsPaid(_paymentRequestModel);
                     if (!response)
                     {
@@ -145,7 +145,7 @@ namespace GymClub.App.Components.Pages
             await List();
         }
 
-        private async Task Finish(int workoutId, int day)
+        private async Task Finish(string workoutCode, int day)
         {
             await _workout.UpdateDay(_selectedWorkoutId, day);
             _nav.NavigateTo("/dashboard");

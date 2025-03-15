@@ -51,7 +51,7 @@ namespace GymClub.Domain.Features.Payment
                 var payment = new TblPayment
                 {
                     UserId = reqModel.CurrentUserId,
-                    WorkoutId = reqModel.WorkoutId,
+                    WorkoutCode = reqModel.WorkoutCode,
                     Amount = reqModel.Amount,
                     PayDate = DateTime.Now
                 };
@@ -70,7 +70,7 @@ namespace GymClub.Domain.Features.Payment
         {
             var workoutItem = await _db.TblPayments.AsNoTracking()
                     .FirstOrDefaultAsync(x => x.UserId == reqModel.CurrentUserId
-                    && x.WorkoutId == reqModel.WorkoutId);
+                    && x.WorkoutCode == reqModel.WorkoutCode);
             return workoutItem is not null;
         }
 

@@ -10,7 +10,7 @@ namespace GymClub.Domain.Features.Payment
     {
         public int PaymentId { get; set; }
         public int UserId { get; set; }
-        public int WorkoutId { get; set; }
+        public int WorkoutCode { get; set; }
         public decimal Amount { get; set; }
         public DateTime PaymentDate { get; set; }
     }
@@ -19,7 +19,7 @@ namespace GymClub.Domain.Features.Payment
     {
         public int PaymentId { get; set; }
 
-        public int? WorkoutId { get; set; }
+        public string? WorkoutCode { get; set; }
 
         public string? WorkoutName { get; set; }
 

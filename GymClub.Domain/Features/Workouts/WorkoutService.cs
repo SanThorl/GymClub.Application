@@ -43,7 +43,7 @@ public class WorkoutService
             
             model.lstData = lst.Select(x => new WorkoutModel
             {
-                WorkoutId = x.WorkoutId,
+                WorkoutCode = x.WorkoutCode,
                 WorkoutName = x.WorkoutName,
                 Place = x.Place,
                 Level = x.Level
@@ -58,12 +58,12 @@ public class WorkoutService
         }
     }
 
-    public async Task<Result<WorkoutResponseModel>> GetWorkoutById(int id)
+    public async Task<Result<WorkoutResponseModel>> GetWorkoutById(string workoutCode)
     {
         WorkoutResponseModel model = new WorkoutResponseModel();
         try
         {
-            var data = await _db.TblWorkouts.FirstOrDefaultAsync(x => x.WorkoutId == id);
+            var data = await _db.TblWorkouts.FirstOrDefaultAsync(x => x.WorkoutCode == workoutCode);
             if (data is null)
             {
                 return Result<WorkoutResponseModel>.FailureResult("Workout is not available now!");
@@ -78,11 +78,11 @@ public class WorkoutService
 
             var days = await _db.TblExercises
                 .AsNoTracking()
-                .Where(x => x.WorkoutId == id)
+                .Where(x => x.WorkoutCode == workoutCode)
                 .Select(x => new ExerciseModel
                 {
                     ExerciseName = x.ExerciseName,
-                    WorkoutId = x.WorkoutId,
+                    WorkoutCode = x.WorkoutCode,
                     Day = x.Day,
                     Time = x.Time,
                     Calories = x.Calories,
@@ -100,11 +100,11 @@ public class WorkoutService
         }
     }
 
-    public async Task UpdateDay(int workoutId, int day)
+    public async Task UpdateDay(string workoutCode, int day)
     {
         //var result = _dapperService.Execute(SqlQueries.FinishedExercises, new { workoutId, day });
         await _db.TblExercises
-            .Where(x => x.Day == day && x.WorkoutId == workoutId)
+            .Where(x => x.Day == day && x.WorkoutCode == workoutCode)
             .ExecuteUpdateAsync(setters => setters.SetProperty(x => x.IsDone, true));
     }
 }
