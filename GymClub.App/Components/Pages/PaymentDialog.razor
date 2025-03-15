@@ -4,17 +4,16 @@
 <MudDialog>
     <TitleContent>
         <MudText Typo="Typo.h6">
-            <MudIcon Icon="@Icons.Material.Filled.AddCircle" Class="mr-3 mb-n1" />
-            Payment
+            @* <MudIcon Icon="@Icons.Material.Filled.AddCircle" Class="mr-3 mb-n1" /> *@
+            Better Shape with Our Gym
         </MudText>
     </TitleContent>
     <DialogContent>
-        <MudTextField @bind-Value="@_selectedWorkout.WorkoutName" Label="Code" />
-        <MudTextField @bind-Value="@_selectedWorkout.Price" Label="Name" />
+        <MudTextField @bind-Value="@reqModel.WorkoutName" Label="Code" />
+        <MudTextField @bind-Value="@reqModel.Price" Label="Name" />
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
         <MudButton Color="Color.Success" OnClick="SaveAsync">Pay</MudButton>
     </DialogActions>
 </MudDialog>
-

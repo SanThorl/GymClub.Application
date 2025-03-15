@@ -40,13 +40,13 @@ namespace GymClub.Domain.Features.User.Profile
                 model.UserName = user.UserName;
                 model.PhoneNo = user.PhoneNo;
                 model.Gender = user.Gender;
-                return Result<RegistrationResponseModel>.SuccessResult(model, "Welcome back!");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
                 return Result<RegistrationResponseModel>.FailureResult(ex);
             }
+            return Result<RegistrationResponseModel>.SuccessResult(model, "Welcome back!");
         }
     }
 }

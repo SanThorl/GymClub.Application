@@ -16,7 +16,12 @@ public class WorkoutModel : BaseRequestModel
     public string WorkoutCode { get; set; }
     public decimal Price { get; set; }
 }
-
+public class WorkoutResponseModel
+{
+    public List<WorkoutModel> lstData { get; set; }
+    public WorkoutModel Data { get; set; }
+    public int TotalDays { get; set; }
+}
 public class ExerciseModel : BaseRequestModel
 {
     public int ExerciseId { get; set; }
@@ -41,9 +46,7 @@ public class ExerciseModel : BaseRequestModel
     public int RemainingSeconds { get; set; } // Used for countdown
     public bool IsRunning { get; set; } = false;
 }
-public class WorkoutResponseModel
+public class ExerciseResponseModel
 {
-    public List<WorkoutModel> lstData { get; set; }
-    public WorkoutModel Data { get; set; }
-    public List<ExerciseModel> ExerciseList { get; set; }
+    public List<ExerciseModel> lstExercise { get; set; }
 }

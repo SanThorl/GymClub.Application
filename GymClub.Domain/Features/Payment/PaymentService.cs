@@ -57,13 +57,13 @@ namespace GymClub.Domain.Features.Payment
                 };
                 await _db.TblPayments.AddAsync(payment);
                 await _db.SaveChangesAsync();
-                return Result<PaymentRequestModel>.SuccessResult(reqModel, "Payment Successful!");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
                 return Result<PaymentRequestModel>.FailureResult(ex);
             }
+            return Result<PaymentRequestModel>.SuccessResult(reqModel, "Payment Successful!");
         }
 
         public async Task<bool> IsPaid(PaymentRequestModel reqModel)

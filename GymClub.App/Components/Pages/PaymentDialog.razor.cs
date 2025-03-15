@@ -8,33 +8,19 @@ namespace GymClub.App.Components.Pages;
 public partial class PaymentDialog
 {
     [CascadingParameter] IMudDialogInstance MudDialog { get; set; }
-
-    private PaymentRequestModel reqModel = new();
-    private WorkoutModel _selectedWorkout;
+    [CascadingParameter] public WorkoutModel reqModel { get; set; }
+    //private WorkoutModel reqModel;
+    private PaymentRequestModel requestModel = new();
     private void Cancel()
     {
         MudDialog.Cancel();
     }
-
-    //private async Task SaveAsync()
-    //{
-    //    var response = await HttpClientService.ExecuteAsync<ProductCategoryResponseModel>(
-    //        EndPoints.ProductCategory,
-    //        EnumHttpMethod.Post,
-    //        reqModel
-    //    );
-
-    //    if (response.IsError)
-    //    {
-    //        _injectService.ShowMessage(response.Message);
-    //        return;
-    //    }
-    //    InjectService.ShowMessage(response.Message, EnumResponseType.Success);
-    //    MudDialog.Close();
-    //}
     private async Task SaveAsync()
     {
-        var response = await _paymentServie.PayForWorkout(reqModel);
+        requestModel.CurrentUserId = reqModel.CurrentUserId;
+        requestModel.WorkoutCode = reqModel.WorkoutCode;
+        requestModel.Amount = reqModel.Price;
+        var response = await _paymentServie.PayForWorkout(requestModel);
         if (!response.Success)
         {
             await _injectService.ShowErrorMessage(response.Message);

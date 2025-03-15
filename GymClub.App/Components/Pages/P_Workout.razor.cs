@@ -14,11 +14,13 @@ namespace GymClub.App.Components.Pages
         private UserSessionModel _userSession;
         private Result<WorkoutResponseModel> model;
         private List<WorkoutModel> lst;
-        private List<ExerciseModel> lstExercise;
+        //private List<ExerciseModel> lstExercise;
+        private Result<ExerciseResponseModel> resModel;
         private List<ExerciseModel> eListForEachDay = new();
         private EnumFormType _formType = EnumFormType.WorkoutList;
         private IList<WorkoutModel> _selectedWorkout = new List<WorkoutModel>();
         private int _selectedDay;
+        private int _totalDays;
         private string _selectedWorkoutId;
         private WorkoutModel data;
         private PaymentRequestModel _paymentRequestModel = new();
@@ -55,7 +57,8 @@ namespace GymClub.App.Components.Pages
                 await _injectService.EnableLoading();
                 model = await _workout.GetWorkoutById(workoutCode);
                 _selectedWorkoutId = workoutCode;
-                lstExercise = model.Data!.ExerciseList;
+                //lstExercise = model.Data!.ExerciseList;
+                _totalDays = model.Data.TotalDays;
                 data = model.Data.Data;
                 await _injectService.DisableLoading();
                 _formType = EnumFormType.DayList;
@@ -81,14 +84,15 @@ namespace GymClub.App.Components.Pages
                         var dialog = await _dialogService.ShowAsync<PaymentDialog>("Payment is Requied for this Workout");
                         var result = await dialog.Result;
 
-                        if (!result.Canceled)
+                        if (result!.Canceled)
                         {
                             await List();
                         }
                     }
                 }
                 await _injectService.EnableLoading();
-                eListForEachDay = lstExercise.Where(x => x.Day == day).ToList();
+                resModel = await _workout.GetExerciseListForEachDay(_selectedWorkoutId, day);
+                eListForEachDay = resModel.Data.lstExercise; 
 
                 _formType = EnumFormType.ExerciseList;
                 foreach (var exercise in eListForEachDay)
@@ -103,6 +107,7 @@ namespace GymClub.App.Components.Pages
                 await _injectService.DisableLoading();
                 _logger.LogError(ex, ex.Message);
             }
+            StateHasChanged();
         }
 
         private async Task StartTimer(ExerciseModel exercise)

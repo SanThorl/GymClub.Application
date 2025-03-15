@@ -40,7 +40,7 @@ public class WorkoutService
                 //goto result;
                 return Result<WorkoutResponseModel>.FailureResult("Workouts are not available now!");
             }
-            
+
             model.lstData = lst.Select(x => new WorkoutModel
             {
                 WorkoutCode = x.WorkoutCode,
@@ -48,14 +48,13 @@ public class WorkoutService
                 Place = x.Place,
                 Level = x.Level
             }).ToList();
-
-            return Result<WorkoutResponseModel>.SuccessResult(model, "The clock is ticking.Go on, keep building the person you want to be!");
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, ex.Message);
             return Result<WorkoutResponseModel>.FailureResult(ex);
         }
+        return Result<WorkoutResponseModel>.SuccessResult(model, "The clock is ticking.Go on, keep building the person you want to be!");
     }
 
     public async Task<Result<WorkoutResponseModel>> GetWorkoutById(string workoutCode)
@@ -70,6 +69,7 @@ public class WorkoutService
             }
             model.Data = new WorkoutModel
             {
+                WorkoutCode = data.WorkoutCode,
                 WorkoutName = data.WorkoutName,
                 Place = data.Place,
                 Level = data.Level,
@@ -88,16 +88,17 @@ public class WorkoutService
                     Calories = x.Calories,
                     DelFlag = x.DelFlag
                 })
-                .Distinct().ToListAsync();
+                .GroupBy(x => x.Day)
+                .ToListAsync();
 
-            model.ExerciseList = days;
-            return Result<WorkoutResponseModel>.SuccessResult(model, "The clock is ticking. Go on, keep building the person you want to be!");
+            model.TotalDays = days.Count;
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, ex.Message);
             return Result<WorkoutResponseModel>.FailureResult(ex);
         }
+        return Result<WorkoutResponseModel>.SuccessResult(model, "The clock is ticking. Go on, keep building the person you want to be!");
     }
 
     public async Task UpdateDay(string workoutCode, int day)
@@ -106,5 +107,35 @@ public class WorkoutService
         await _db.TblExercises
             .Where(x => x.Day == day && x.WorkoutCode == workoutCode)
             .ExecuteUpdateAsync(setters => setters.SetProperty(x => x.IsDone, true));
+    }
+
+    public async Task<Result<ExerciseResponseModel>> GetExerciseListForEachDay(string workoutCode, int day)
+    {
+        ExerciseResponseModel model = new ExerciseResponseModel();
+        try
+        {
+            var lst = await _db.TblExercises
+                .AsNoTracking()
+                .Where(x => x.WorkoutCode == workoutCode && x.Day == day)
+                .Select(x => new ExerciseModel
+                {
+                    ExerciseCode = x.ExerciseCode,
+                    ExerciseName = x.ExerciseName,
+                    WorkoutCode = x.WorkoutCode,
+                    Day = x.Day,
+                    Time = x.Time,
+                    Calories = x.Calories,
+                    DelFlag = x.DelFlag,
+                    IsDone = x.IsDone
+                })
+                .ToListAsync();
+            model.lstExercise = lst;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            return Result<ExerciseResponseModel>.FailureResult(ex);
+        }
+        return Result<ExerciseResponseModel>.SuccessResult(model, "The clock is ticking. Go on, keep building the person you want to be!");
     }
 }

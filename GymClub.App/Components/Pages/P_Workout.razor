@@ -11,6 +11,7 @@
 @inject PaymentService _paymentServie
 @inject AuthenticationStateProvider _authStateProvider
 @inject ILogger<P_Workout> _logger
+@inject IDialogService _dialogService
 
 @if (_formType == EnumFormType.WorkoutList)
 {
@@ -57,14 +58,14 @@ else if (_formType == EnumFormType.DayList)
 					</MudCard>
 				</MudContainer>
 			</div>
-			@if (lstExercise.Count > 0)
+			@if (_totalDays > 0)
 			{
-				int count = 0;
-
 				<RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="Radzen.AlignItems.Center" Gap="1rem" Wrap="FlexWrap.Wrap">
-					@foreach (var lst in lstExercise)
+					@for (int day = 1; day <= _totalDays; day++)
 					{
-						<RadzenButton Click="() => ShowExercises(lst.Day)" Text="@($"Workout Day {++count}")" Icon="check_circle" Shade="Shade.Dark" ButtonStyle="ButtonStyle.Base" />
+						var currentDay = day;
+						@* <RadzenButton Click="() => ShowExercises(lst.Day)" Text="@($"Workout Day {++count}")" Icon="check_circle" Shade="Shade.Dark" ButtonStyle="ButtonStyle.Base" /> *@
+						<RadzenButton Click="() => ShowExercises(currentDay)" Text="@($"Workout Day{currentDay}")" Icon="check_circle" Shade="Shade.Dark" ButtonStyle="ButtonStyle.Base" />
 					}
 				</RadzenStack>
 			}

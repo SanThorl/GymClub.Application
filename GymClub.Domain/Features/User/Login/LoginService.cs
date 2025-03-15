@@ -50,12 +50,12 @@ public class LoginService
             //model.SessionId = login.SessionId;
             model.UserName = item.UserName;
             model.UserId = item.UserId;
-            return Result<LoginResponseModel>.SuccessResult(model, "Welcome back!");
         }
         catch(Exception ex)
         {
             _logger.LogError(ex.Message, ex);
             return Result<LoginResponseModel>.FailureResult(ex);
         }
+        return Result<LoginResponseModel>.SuccessResult(model, "Welcome back!");
     }
 }
