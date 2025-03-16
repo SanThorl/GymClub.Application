@@ -73,23 +73,23 @@ namespace GymClub.App.Components.Pages
         {
             try
             {
-                _selectedDay = day;
-                if(_selectedDay >2 )
-                {
-                    _paymentRequestModel.CurrentUserId = _userSession.UserId;
-                    _paymentRequestModel.WorkoutCode = _selectedWorkoutId;
-                    var response = await _paymentServie.IsPaid(_paymentRequestModel);
-                    if (!response)
-                    {
-                        var dialog = await _dialogService.ShowAsync<PaymentDialog>("Payment is Requied for this Workout");
-                        var result = await dialog.Result;
+                //_selectedDay = day;
+                //if(_selectedDay >2 )
+                //{
+                //    _paymentRequestModel.CurrentUserId = _userSession.UserId;
+                //    _paymentRequestModel.WorkoutCode = _selectedWorkoutId;
+                //    var response = await _paymentServie.IsPaid(_paymentRequestModel);
+                //    if (!response)
+                //    {
+                //        var dialog = await _dialogService.ShowAsync<PaymentDialog>("Payment is Requied for this Workout");
+                //        var result = await dialog.Result;
 
-                        if (result!.Canceled)
-                        {
-                            await List();
-                        }
-                    }
-                }
+                //        if (result!.Canceled)
+                //        {
+                //            await List();
+                //        }
+                //    }
+                //}
                 await _injectService.EnableLoading();
                 resModel = await _workout.GetExerciseListForEachDay(_selectedWorkoutId, day);
                 eListForEachDay = resModel.Data.lstExercise; 

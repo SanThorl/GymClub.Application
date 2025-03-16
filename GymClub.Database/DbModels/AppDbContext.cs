@@ -107,6 +107,9 @@ public partial class AppDbContext : DbContext
                 .HasMaxLength(10)
                 .IsUnicode(false)
                 .IsFixedLength();
+            entity.Property(e => e.ImagePath)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.JoinDate).HasColumnType("datetime");
             entity.Property(e => e.Password)
                 .HasMaxLength(180)
@@ -114,6 +117,7 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.PhoneNo)
                 .HasMaxLength(11)
                 .IsUnicode(false);
+            entity.Property(e => e.UpdatedTime).HasColumnType("datetime");
             entity.Property(e => e.UserName).HasMaxLength(50);
         });
 

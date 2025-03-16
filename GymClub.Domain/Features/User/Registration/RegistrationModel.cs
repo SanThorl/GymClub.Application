@@ -32,9 +32,6 @@ public class RegistrationResponseModel
     public string DateOfBirth { get; set; }
 }
 
-public class ProfileRequestModel
-{
-    public string UserId { get; set; }
-}
+
 
 

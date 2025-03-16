@@ -92,7 +92,7 @@ try
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "GymClubApp is terminated unexpectedly");
+    Log.Fatal(ex, "Gym Club Application is terminated unexpectedly");
 }
 finally
 {

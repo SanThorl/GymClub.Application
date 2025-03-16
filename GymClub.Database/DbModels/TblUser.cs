@@ -20,4 +20,8 @@ public partial class TblUser
     public DateTime JoinDate { get; set; }
 
     public bool DelFlag { get; set; }
+
+    public string? ImagePath { get; set; }
+
+    public DateTime? UpdatedTime { get; set; }
 }

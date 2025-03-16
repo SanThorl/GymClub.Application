@@ -20,3 +20,15 @@
     --rz-primary-hover-color: #7a28d7; /* Slightly darker for hover */
     --rz-primary-active-color: #6a20c7; /* Even darker for active state */
 }
+
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.badge-overlay {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    z-index: 10;
+}

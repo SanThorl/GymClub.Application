@@ -8,70 +8,148 @@
 @inject ProfileService _profileService
 @inject ILogger<P_Profile> _logger
 
-@if(model.Data is not null){
-    <div class="card rounded-4">
-        <div class="card-body p-4">
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="position-relative mb-5 text-center">
-                        <div>
-                            <img src="@_imagePathDefault" class="img-fluid rounded-circle p-1 bg-grd-danger shadow" style="width: 170px;height: 170px;object-fit: cover;" width="170" height="170" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-10">
-                    <div class="full-info mt-4">
-                        <div class="info-list d-flex flex-column gap-3">
-                            <div class="info-list-item d-flex align-items-center gap-3">
-                                <i class="fa-regular fa-circle-user"></i>
-                                <p class="mb-0">Full Name: @model.Data!.UserName</p>
-                            </div>
-                            <div class="info-list-item d-flex align-items-center gap-3">
-                                <i class="fa-solid fa-mobile"></i>
-                                <p class="mb-0">Phone: @model.Data.PhoneNo</p>
-                            </div>
-                            <div class="info-list-item d-flex align-items-center gap-3">
-                                <i class="fa-solid fa-mobile"></i>
-                                <p class="mb-0">Gender: @model.Data.Gender</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+@if (model.Data is not null)
+{
+	<div class="card rounded-4">
+		<div class="card-body p-4">
+			<div class="row">
+				<div class="col-md-2">
+					<div class="position-relative mb-5 text-center">
+						@if (_reqModel.ImageUrl is null)
+						{
+							<div>
+								<img src="@_imagePathDefault" class="img-fluid rounded-circle p-1 bg-grd-danger shadow" style="width: 170px;height: 170px;object-fit: cover;" width="170" height="170" alt="">
+							</div>
+						}
+						else
+						{
+							<div>
+								<img src=@_reqModel.ImageUrl class="img-fluid rounded-circle p-1 bg-grd-danger shadow" style="width: 170px;height: 170px;object-fit: cover;" width="170" height="170" />
+							</div>
+						}
+						<MudFileUpload T="IBrowserFile" FilesChanged="UploadFile">
+							<ActivatorContent>
+								<MudIcon Icon="@Icons.Material.Filled.CameraAlt" Color="Color.Info" Style="position: absolute; bottom: 15px; right: 68px; z-index: 10;" />
+							</ActivatorContent>
+						</MudFileUpload>
+					</div>
+				</div>
+				<div class="col-md-8">
+					<div class="full-info mt-3">
+						<div class="info-list d-flex flex-column gap-3">
+							<div class="info-list-item d-flex align-items-center gap-3">
+								<i class="fa-regular fa-circle-user"></i>
+								<p class="mb-0">Name: @model.Data!.UserName</p>
+							</div>
+							<div class="info-list-item d-flex align-items-center gap-3">
+								<i class="fa-solid fa-mobile"></i>
+								<p class="mb-0">Phone: @model.Data.PhoneNo</p>
+							</div>
+							<div class="info-list-item d-flex align-items-center gap-3">
+								<button @onclick=Clear class="btn btn-outline-dark btn-sm mb-0 me-2" disabled="@disabled" type="button">Clear</button>
+								<button class="btn btn-success btn-sm mb-0" type="button" @onclick=Save>Update</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 }
 
 @code {
-    private UserSessionModel _userSession = new();
-    private string _imagePathDefault = "images/user.png";
-    private ProfileRequestModel _reqModel = new();
-    private Result<RegistrationResponseModel> model = new();
+	private UserSessionModel _userSession = new();
+	private string _imagePathDefault = string.Empty;
+	private ProfileRequestModel _reqModel = new();
+	private Result<ProfileResponseModel> model = new();
+	private bool disabled = true;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await _injectService.EnableLoading();
-            var customAuthStateProvider = (CustomAuthenticationStateProvider)_authStateProvider;
-            var authState = await customAuthStateProvider.GetAuthenticationStateAsync();
-            _userSession = await customAuthStateProvider.GetUserData();
-            _reqModel.UserId = _userSession.UserId;
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			await _injectService.EnableLoading();
+			var customAuthStateProvider = (CustomAuthenticationStateProvider)_authStateProvider;
+			var authState = await customAuthStateProvider.GetAuthenticationStateAsync();
+			_userSession = await customAuthStateProvider.GetUserData();
+			_reqModel.UserId = _userSession.UserId;
 
-            await Profile();
+			await Profile();
 
-            await _injectService.DisableLoading();
-            StateHasChanged();
-        }
-    }
+			await _injectService.DisableLoading();
+			StateHasChanged();
+		}
+	}
 
-    private async Task Profile()
-    {
-        model = await _profileService.Profile(_reqModel);
-        if (!model.Success)
-        {
-            await _injectService.ShowErrorMessage(model.Message);
-            return;
-        }
-    }
+	private async Task Profile()
+	{
+		model = await _profileService.Profile(_reqModel);
+		if (!model.Success)
+		{
+			await _injectService.ShowErrorMessage(model.Message);
+			return;
+		}
+		_imagePathDefault = "data:image;base64," + model.Data.ImageStr;
+		if (model.Data.ImagePath is null)
+		{
+			_imagePathDefault = "images/user.png";
+		}
+	}
+
+	private async Task UploadFile(IBrowserFile file)
+	{
+		try
+		{
+			if (file != null)
+			{
+				MemoryStream ms = new MemoryStream();
+				await file.OpenReadStream().CopyToAsync(ms);
+				var bytes = ms.ToArray();
+				string fileName = file.Name;
+				var _base64Str = Convert.ToBase64String(bytes);
+				_reqModel.ImageFile = _base64Str;
+				_reqModel.ImageUrl = $"data:{file.ContentType};base64,{_base64Str}";
+				disabled = false;
+			}
+
+			StateHasChanged();
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError(ex, ex.Message);
+		}
+	}
+
+	public async Task Save()
+	{
+		try
+		{
+			if (string.IsNullOrEmpty(_reqModel.ImageUrl))
+			{
+				await _injectService.ShowErrorMessage("Please upload image.");
+				return;
+			}
+			var result = await _profileService.UpdateProfile(_reqModel);
+			if (!result.Success)
+			{
+				await _injectService.ShowErrorMessage(result.Message);
+			}
+			disabled = true;
+			await _injectService.ShowSuccessMessage(result.Message);
+
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError(ex, ex.Message);
+		}
+	}
+
+	public void Clear()
+	{
+		_reqModel.ImageUrl = null;
+		_reqModel.ImageFile = null;
+		_reqModel.ImageExtension = null;
+		disabled = true;
+		StateHasChanged();
+	}
 }
